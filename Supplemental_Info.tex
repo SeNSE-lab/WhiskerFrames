@@ -1,0 +1,1842 @@
+\documentclass[11pt]{article}
+
+    \usepackage[breakable]{tcolorbox}
+    \usepackage{parskip} % Stop auto-indenting (to mimic markdown behaviour)
+    
+
+    % Basic figure setup, for now with no caption control since it's done
+    % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
+    \usepackage{graphicx}
+    % Keep aspect ratio if custom image width or height is specified
+    \setkeys{Gin}{keepaspectratio}
+    % Maintain compatibility with old templates. Remove in nbconvert 6.0
+    \let\Oldincludegraphics\includegraphics
+    % Ensure that by default, figures have no caption (until we provide a
+    % proper Figure object with a Caption API and a way to capture that
+    % in the conversion process - todo).
+    \usepackage{caption}
+    \DeclareCaptionFormat{nocaption}{}
+    \captionsetup{format=nocaption,aboveskip=0pt,belowskip=0pt}
+
+    \usepackage{float}
+    \floatplacement{figure}{H} % forces figures to be placed at the correct location
+    \usepackage{xcolor} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{textcomp} % defines textquotesingle
+    % Hack from http://tex.stackexchange.com/a/47451/13684:
+    \AtBeginDocument{%
+        \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+    }
+    \usepackage{upquote} % Upright quotes for verbatim code
+    \usepackage{eurosym} % defines \euro
+
+    \usepackage{iftex}
+    \ifPDFTeX
+        \usepackage[T1]{fontenc}
+        \IfFileExists{alphabeta.sty}{
+              \usepackage{alphabeta}
+          }{
+              \usepackage[mathletters]{ucs}
+              \usepackage[utf8x]{inputenc}
+          }
+    \else
+        \usepackage{fontspec}
+        \usepackage{unicode-math}
+    \fi
+
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics
+                         % to support a larger range
+    \makeatletter % fix for old versions of grffile with XeLaTeX
+    \@ifpackagelater{grffile}{2019/11/01}
+    {
+      % Do nothing on new versions
+    }
+    {
+      \def\Gread@@xetex#1{%
+        \IfFileExists{"\Gin@base".bb}%
+        {\Gread@eps{\Gin@base.bb}}%
+        {\Gread@@xetex@aux#1}%
+      }
+    }
+    \makeatother
+    \usepackage[Export]{adjustbox} % Used to constrain images to a maximum size
+    \adjustboxset{max size={0.9\linewidth}{0.9\paperheight}}
+
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    % The default LaTeX title has an obnoxious amount of whitespace. By default,
+    % titling removes some of it. It also provides customization options.
+    \usepackage{titling}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    \usepackage{array}     % table support for pandoc >= 2.11.3
+    \usepackage{calc}      % table minipage width calculation for pandoc >= 2.11.1
+    \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+    \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                                % normalem makes italics be italics, not underlines
+    \usepackage{soul}      % strikethrough (\st) support for pandoc >= 3.0.0
+    \usepackage{mathrsfs}
+    
+
+    
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+    \definecolor{ansi-default-inverse-fg}{HTML}{FFFFFF}
+    \definecolor{ansi-default-inverse-bg}{HTML}{000000}
+
+    % common color for the border for error outputs.
+    \definecolor{outerrorbackground}{HTML}{FFDFDF}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \makeatletter
+    \newsavebox\pandoc@box
+    \newcommand*\pandocbounded[1]{%
+      \sbox\pandoc@box{#1}%
+      % scaling factors for width and height
+      \Gscale@div\@tempa\textheight{\dimexpr\ht\pandoc@box+\dp\pandoc@box\relax}%
+      \Gscale@div\@tempb\linewidth{\wd\pandoc@box}%
+      % select the smaller of both
+      \ifdim\@tempb\p@<\@tempa\p@
+        \let\@tempa\@tempb
+      \fi
+      % scaling accordingly (\@tempa < 1)
+      \ifdim\@tempa\p@<\p@
+        \scalebox{\@tempa}{\usebox\pandoc@box}%
+      % scaling not needed, use as it is
+      \else
+        \usebox{\pandoc@box}%
+      \fi
+    }
+    \makeatother
+
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatibility definitions
+    \def\gt{>}
+    \def\lt{<}
+    \let\Oldtex\TeX
+    \let\Oldlatex\LaTeX
+    \renewcommand{\TeX}{\textrm{\Oldtex}}
+    \renewcommand{\LaTeX}{\textrm{\Oldlatex}}
+    % Document parameters
+    % Document title
+    \title{WhiskerFrames}
+    
+    
+    
+    
+    
+    
+    
+% Pygments definitions
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\@namedef{PY@tok@w}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\@namedef{PY@tok@c}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cp}{\def\PY@tc##1{\textcolor[rgb]{0.61,0.40,0.00}{##1}}}
+\@namedef{PY@tok@k}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kp}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kt}{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\@namedef{PY@tok@o}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@ow}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\@namedef{PY@tok@nb}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@nf}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@nc}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@nn}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@ne}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.80,0.25,0.22}{##1}}}
+\@namedef{PY@tok@nv}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@no}{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\@namedef{PY@tok@nl}{\def\PY@tc##1{\textcolor[rgb]{0.46,0.46,0.00}{##1}}}
+\@namedef{PY@tok@ni}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.44,0.44,0.44}{##1}}}
+\@namedef{PY@tok@na}{\def\PY@tc##1{\textcolor[rgb]{0.41,0.47,0.13}{##1}}}
+\@namedef{PY@tok@nt}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@nd}{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\@namedef{PY@tok@s}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sd}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@si}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.64,0.35,0.47}{##1}}}
+\@namedef{PY@tok@se}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.36,0.12}{##1}}}
+\@namedef{PY@tok@sr}{\def\PY@tc##1{\textcolor[rgb]{0.64,0.35,0.47}{##1}}}
+\@namedef{PY@tok@ss}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@sx}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@m}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@gh}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\@namedef{PY@tok@gu}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\@namedef{PY@tok@gd}{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\@namedef{PY@tok@gi}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.52,0.00}{##1}}}
+\@namedef{PY@tok@gr}{\def\PY@tc##1{\textcolor[rgb]{0.89,0.00,0.00}{##1}}}
+\@namedef{PY@tok@ge}{\let\PY@it=\textit}
+\@namedef{PY@tok@gs}{\let\PY@bf=\textbf}
+\@namedef{PY@tok@gp}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\@namedef{PY@tok@go}{\def\PY@tc##1{\textcolor[rgb]{0.44,0.44,0.44}{##1}}}
+\@namedef{PY@tok@gt}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\@namedef{PY@tok@err}{\def\PY@bc##1{{\setlength{\fboxsep}{\string -\fboxrule}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}}
+\@namedef{PY@tok@kc}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kd}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kn}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kr}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@bp}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@fm}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@vc}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vg}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vi}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vm}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@sa}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sb}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sc}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@dl}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@s2}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sh}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@s1}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@mb}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mf}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mh}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mi}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@il}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mo}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@ch}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cm}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cpf}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@c1}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cs}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % For linebreaks inside Verbatim environment from package fancyvrb.
+    \makeatletter
+        \newbox\Wrappedcontinuationbox
+        \newbox\Wrappedvisiblespacebox
+        \newcommand*\Wrappedvisiblespace {\textcolor{red}{\textvisiblespace}}
+        \newcommand*\Wrappedcontinuationsymbol {\textcolor{red}{\llap{\tiny$\m@th\hookrightarrow$}}}
+        \newcommand*\Wrappedcontinuationindent {3ex }
+        \newcommand*\Wrappedafterbreak {\kern\Wrappedcontinuationindent\copy\Wrappedcontinuationbox}
+        % Take advantage of the already applied Pygments mark-up to insert
+        % potential linebreaks for TeX processing.
+        %        {, <, #, %, $, ' and ": go to next line.
+        %        _, }, ^, &, >, - and ~: stay at end of broken line.
+        % Use of \textquotesingle for straight quote.
+        \newcommand*\Wrappedbreaksatspecials {%
+            \def\PYGZus{\discretionary{\char`\_}{\Wrappedafterbreak}{\char`\_}}%
+            \def\PYGZob{\discretionary{}{\Wrappedafterbreak\char`\{}{\char`\{}}%
+            \def\PYGZcb{\discretionary{\char`\}}{\Wrappedafterbreak}{\char`\}}}%
+            \def\PYGZca{\discretionary{\char`\^}{\Wrappedafterbreak}{\char`\^}}%
+            \def\PYGZam{\discretionary{\char`\&}{\Wrappedafterbreak}{\char`\&}}%
+            \def\PYGZlt{\discretionary{}{\Wrappedafterbreak\char`\<}{\char`\<}}%
+            \def\PYGZgt{\discretionary{\char`\>}{\Wrappedafterbreak}{\char`\>}}%
+            \def\PYGZsh{\discretionary{}{\Wrappedafterbreak\char`\#}{\char`\#}}%
+            \def\PYGZpc{\discretionary{}{\Wrappedafterbreak\char`\%}{\char`\%}}%
+            \def\PYGZdl{\discretionary{}{\Wrappedafterbreak\char`\$}{\char`\$}}%
+            \def\PYGZhy{\discretionary{\char`\-}{\Wrappedafterbreak}{\char`\-}}%
+            \def\PYGZsq{\discretionary{}{\Wrappedafterbreak\textquotesingle}{\textquotesingle}}%
+            \def\PYGZdq{\discretionary{}{\Wrappedafterbreak\char`\"}{\char`\"}}%
+            \def\PYGZti{\discretionary{\char`\~}{\Wrappedafterbreak}{\char`\~}}%
+        }
+        % Some characters . , ; ? ! / are not pygmentized.
+        % This macro makes them "active" and they will insert potential linebreaks
+        \newcommand*\Wrappedbreaksatpunct {%
+            \lccode`\~`\.\lowercase{\def~}{\discretionary{\hbox{\char`\.}}{\Wrappedafterbreak}{\hbox{\char`\.}}}%
+            \lccode`\~`\,\lowercase{\def~}{\discretionary{\hbox{\char`\,}}{\Wrappedafterbreak}{\hbox{\char`\,}}}%
+            \lccode`\~`\;\lowercase{\def~}{\discretionary{\hbox{\char`\;}}{\Wrappedafterbreak}{\hbox{\char`\;}}}%
+            \lccode`\~`\:\lowercase{\def~}{\discretionary{\hbox{\char`\:}}{\Wrappedafterbreak}{\hbox{\char`\:}}}%
+            \lccode`\~`\?\lowercase{\def~}{\discretionary{\hbox{\char`\?}}{\Wrappedafterbreak}{\hbox{\char`\?}}}%
+            \lccode`\~`\!\lowercase{\def~}{\discretionary{\hbox{\char`\!}}{\Wrappedafterbreak}{\hbox{\char`\!}}}%
+            \lccode`\~`\/\lowercase{\def~}{\discretionary{\hbox{\char`\/}}{\Wrappedafterbreak}{\hbox{\char`\/}}}%
+            \catcode`\.\active
+            \catcode`\,\active
+            \catcode`\;\active
+            \catcode`\:\active
+            \catcode`\?\active
+            \catcode`\!\active
+            \catcode`\/\active
+            \lccode`\~`\~
+        }
+    \makeatother
+
+    \let\OriginalVerbatim=\Verbatim
+    \makeatletter
+    \renewcommand{\Verbatim}[1][1]{%
+        %\parskip\z@skip
+        \sbox\Wrappedcontinuationbox {\Wrappedcontinuationsymbol}%
+        \sbox\Wrappedvisiblespacebox {\FV@SetupFont\Wrappedvisiblespace}%
+        \def\FancyVerbFormatLine ##1{\hsize\linewidth
+            \vtop{\raggedright\hyphenpenalty\z@\exhyphenpenalty\z@
+                \doublehyphendemerits\z@\finalhyphendemerits\z@
+                \strut ##1\strut}%
+        }%
+        % If the linebreak is at a space, the latter will be displayed as visible
+        % space at end of first line, and a continuation symbol starts next line.
+        % Stretch/shrink are however usually zero for typewriter font.
+        \def\FV@Space {%
+            \nobreak\hskip\z@ plus\fontdimen3\font minus\fontdimen4\font
+            \discretionary{\copy\Wrappedvisiblespacebox}{\Wrappedafterbreak}
+            {\kern\fontdimen2\font}%
+        }%
+
+        % Allow breaks at special characters using \PYG... macros.
+        \Wrappedbreaksatspecials
+        % Breaks at punctuation characters . , ; ? ! and / need catcode=\active
+        \OriginalVerbatim[#1,codes*=\Wrappedbreaksatpunct]%
+    }
+    \makeatother
+
+    % Exact colors from NB
+    \definecolor{incolor}{HTML}{303F9F}
+    \definecolor{outcolor}{HTML}{D84315}
+    \definecolor{cellborder}{HTML}{CFCFCF}
+    \definecolor{cellbackground}{HTML}{F7F7F7}
+
+    % prompt
+    \makeatletter
+    \newcommand{\boxspacing}{\kern\kvtcb@left@rule\kern\kvtcb@boxsep}
+    \makeatother
+    \newcommand{\prompt}[4]{
+        {\ttfamily\llap{{\color{#2}[#3]:\hspace{3pt}#4}}\vspace{-\baselineskip}}
+    }
+    
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=urlcolor,
+      linkcolor=linkcolor,
+      citecolor=citecolor,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%               MY PREAMBLE COMMANDS                  %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%   
+
+% macros
+\newcommand{\bs}[1]{\boldsymbol{#1}} %"bs" for bold symbol, which I'll probably use a lot
+
+%setting starting eqn number
+\setcounter{equation}{31}
+
+%modifying description lists
+\usepackage{enumitem}
+\setlist[description]{leftmargin=0pt, style=unboxed}
+
+\title{WhiskerFrames - Supplementary Information}
+\author{Galperin et al.}
+\date{October 2026 Resubmission}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+\maketitle
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                   INTRO QUOTATION                   %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%   
+\begin{quotation}
+    This document serves as supplementary information for the 2026 resubmission of Whisker Frames.
+    It contains an index of supplementary videos, mathematical proofs supporting results in main text sections 2.3 - 2.5, and the source and output of the supporting symbolic math Jupyter Notebook. 
+    For all updated source code related to this project, visit the \href{https://github.com/SeNSE-lab/WhiskerFrames}{WhiskerFrames Github Repository}
+\end{quotation}
+
+
+%contents
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                       CONTENTS                      %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%   
+\tableofcontents
+\newpage
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                     VIDEO INDEX                     %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+\section{Video Index}
+    \begin{description}
+      \item [Video 1: Whisker Frames Introduction.]
+      In this video, the Whisker Frames project is introduced. A handheld hardware prototype is demonstrated and the biological inspiration of the mechanism is shown. 
+      
+      \item [Video 2: Effects in $\bs{p}$-space.] 
+      This video shows snapshots from Demsos, a browser-based graphing calculator. Isolated effects on the control frame, whisker array, and the output curves (orientation and fanning) are described as variables are moved independently in the $(p_1,p_2,\theta)$ coordinate system.
+      
+      \item [Video 3: Hardware Introduction.] 
+      This video introduces the robotic hardware discussed in main text sections 2.6 and 4.2. 
+      
+      \item [Video 4: Trajectory Demonstrations.] 
+      In this video, the robotic hardware is used to demonstrate nine motion trajectories, showing the effects of independent changes in the various coordinate systems described in the main text.
+      
+      \item [Video 5: Hardware Application Demonstrations.] 
+      In this video, the robotic hardware demonstrates two extended applications, supporting the uses described in main text section 2.6. 
+    \end{description}  
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                   PROOFS SECTION                    %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%    
+\section{Proofs}
+
+    \subsection{Proof related to Section 2.3:  All whisker lines will be tangent to the parabola.}
+        In this proof, all whisker lines will be shown to be tangent to the parabola. This will be done by re-deriving the conic equation (5) as an envelope to all possible whisker lines. \\
+        
+        First, a whisker line is defined as the line intersecting the point $(0,h)$ and pointing in the direction of the vector $\boldsymbol{u}(h)$. This can be written as a line in standard form: 
+
+        \begin{equation}
+          \left(\frac{u_2}{u_1}\right) x - y + h = 0
+          \label{eq:Eq32}
+        \end{equation}
+    
+        This equation represents a family of curves in x-y space, as it contains many implicit curves (lines) on the x-y plane defined by a single parameter, $h$. The family of whisker lines, $G$, is described as a function of $x$, $y$, and $h$. 
+        
+        \begin{equation}
+          G(x,y,h) = \left(\frac{u_2}{u_1}\right) x - y + h
+          \label{eq:Eq33}
+        \end{equation}
+    
+        An envelope to a family of curves is a curve that is tangent to every member of the family. An envelope must satisfy the two conditions at each point it contains:
+        
+        \begin{equation}
+          \left\{
+          \begin{array}{l}
+            G(x,y,h) = 0 \\
+            \frac{\partial G(x,y,h)}{\partial{h}} = 0
+          \end{array}
+          \right.
+          \label{eq:Eq34}
+        \end{equation}
+    
+        The first condition ensures that the envelope touches $G$ at the point $(x,y)$ for a given value of $h$. The second condition guarantees that as $h$ varies, $G$ remains tangent to the envelope. The analysis begins by stating the first condition and expanding the equation for the family of whisker lines.
+        
+        \begin{equation}
+          G(x,y,h) = \left(\frac{u_2}{u_1}\right) x - y + h = 0
+          \label{eq:Eq35}
+        \end{equation}
+        
+        \begin{equation}
+          \left(\frac{w_2h-r_2}{w_1h-r_1}\right) x - y + h = 0
+          \label{eq:Eq36}
+        \end{equation}
+        
+        \begin{equation}
+          (w_2h - r_2)x - (w_1h - r_1)y + (w_1h - r_1)h = 0
+          \label{eq:Eq37}
+        \end{equation}
+    
+        Rearranging and grouping by $h$: 
+    
+        \begin{equation}
+          G(x,y,h) = (w_1)h^2 + (w_2x - w_1y - r_1)h + (-r_2x+r_1y) = 0
+          \label{eq:Eq38}
+        \end{equation}
+    
+        With an equation established for $G(x,y,h)$, its partial derivative is taken to formulate the second condition. 
+
+        \begin{equation}
+          \frac{\partial G(x,y,h)}{\partial{h}} = w_2x - w_1y + 2w_1h - r_1 = 0
+          \label{eq:Eq39}
+        \end{equation}
+    
+        Solving for $h$:
+        
+        \begin{equation}
+          \frac{\partial G(x,y,h)}{\partial{h}} = 0 \text{, when } h=\frac{-w_2x + w_1y + r_1}{2w_1}
+          \label{eq:Eq40}
+        \end{equation}
+    
+        The envelope conditions are now equivalent to the following system of equations: 
+
+        \begin{equation}
+          \left\{
+          \begin{array}{l}
+            (w_2)h^2 + (w_2x - w_1y - r_1)h + (-r_2x + r_1y) = 0 \\
+            h = \frac{-w_2x + w_1y + r_1}{2w_1}
+          \end{array}
+          \right.
+          \label{eq:Eq41}
+        \end{equation}
+    
+        To find the envelope, the system of equations is solved by substituting the second equation into the first:
+
+        \begin{equation}
+          w_2\left(\frac{-w_2x + w_1y + r_1}{2w_1}\right)^2 + (w_2x - w_1y - r_1)\left(\frac{-w_2x + w_1y + r_1}{2w_1}\right) + (-r_2x + r_1y) = 0
+          \label{eq:Eq42}
+        \end{equation}
+    
+        Rearranged, (42) becomes 
+        \begin{equation}
+          \left((w_2x - w_1y)^2 - 2r_1(w_2x - w_1y) + r_1^2\right) - 4w_1(-r_2x + r_1y) = 0
+          \label{eq:Eq43}
+        \end{equation}
+    
+        After expansion and reorganization by variable, the resulting expression takes the form of a conic equation: 
+
+        \begin{equation}
+            w_2^2x^2 + (-2w_1w_2)xy + w_1^2y^2 + (-2r_1w_2 + 4r_2w_1)x + (-2r_1w_1)y + r_1^2 = 0
+            \label{eq:Eq44}
+        \end{equation}
+    
+        This is an identical equation to the one found in section 2.3, proving that the parabola is the envelope to the family of whisker lines and is this tangent to all whisker lines given a configuration of the frames.  
+
+    \subsection{Proof related to Section 2.4: The principal axes of the parabola are spanned by $\boldsymbol{w}$ and $\perp\bs{w}$.}
+    
+        Recall, the matrix form of the parabolic curve: \\
+        \setcounter{equation}{28}
+        \begin{equation}
+            \bs{x}^TA\bs{x}, \text{ where } \bs{x} = \begin{bmatrix} x \\ y \\ 1 \end{bmatrix} \text{ and } 
+            A = \begin{bmatrix} w_2^2               & -w_1w_2   & -r_1w_2 + 2r_2w_1 \\
+                                -w_1w_2             & w_1^2     & -r_1w_1 \\
+                                -r_1w_2 + 2r_2w_1   & -r_1w_1   & r_1^2\end{bmatrix}
+            \label{eq:Eq29}
+        \end{equation}
+
+        By the principal axis theorem, the principal axes of this conic are spanned by the eigenvectors of the 2x2 submatrix
+        \setcounter{equation}{44}
+        \begin{equation}
+            A_{sub} = \begin{bmatrix} w_2^2 & -w_1w_2 \\ -w_1w_2 & w_1^2\end{bmatrix}
+            \label{eq:Eq45}
+        \end{equation}
+    
+        The eigenvalues of this matrix, $\lambda_1$ and $\lambda_1$, are determined by solving $\det(A_{sub}-\lambda I) = 0$. Solving for the eigenvalues yields:
+    
+        \begin{equation}
+            \det(A_{sub}-\lambda I) = \begin{vmatrix} w_2^2 - \lambda & -w_1w_2 \\ -w_1w_2 & w_1^2 - \lambda\end{vmatrix} = \lambda^2 + (-w_1^2 - w_2^2)\lambda = 0
+            \label{eq:Eq46}
+        \end{equation}
+        
+        \begin{equation}
+            \lambda^2 + (-w_1^2 - w_2^2)\lambda = \lambda\left(\lambda + (-w_1^2 - w_2^2)\right) = 0
+            \label{eq:Eq47}
+        \end{equation}
+        
+        \begin{equation}
+            \lambda_1 = 0,\text{ } \lambda_2 = (w_1^2 + w_2^2)
+            \label{eq:Eq48}
+        \end{equation}
+    
+        And solving for the eigenvectors using $(A - \lambda I)\bs{v} = 0$, yields:
+    
+        \begin{equation}
+            \text{for }\lambda_1 = 0,  \left\{ \begin{array}{l} w_2^2v_1 - w_1w_2v_2 = 0 \\
+                                                                -w_1w_2v_1 + w_1^2v_2 = 0 \end{array}\right.
+            \label{eq:Eq49}
+        \end{equation}
+        
+        \begin{equation}
+            \text{for }\lambda_2 = (w_1^2 + w_2^2),  \left\{ \begin{array}{l}   -w_1^2v_1 - w_1w_2v_2 = 0 \\
+                                                                                -w_1w_2v_1 + w_2^2v_2 = 0 \end{array}\right.
+            \label{eq:Eq50}
+        \end{equation}
+        
+        \begin{equation}
+            v_1 = \begin{bmatrix} \frac{w_1}{w_2} \\ 1 \end{bmatrix} c_1
+            \label{eq:Eq51}
+        \end{equation}
+        
+        \begin{equation}
+            v_2 = \begin{bmatrix} \frac{-w_2}{w_1} \\ 1 \end{bmatrix} c_2
+            \label{eq:Eq52}
+        \end{equation}
+    
+        where $c_1$ and $c_2$ are constants and "$\perp$” indicates perpendicularity. The new basis vectors that define our coordinate transform should lie on the axes spanned by $v_1$ and $v_2$, should be of equal length for uniform scaling, and should preserve the handedness of the x-y coordinate system. To satisfy these conditions, the basis vectors are obtained by scaling the eigenvectors by the constant values $c_1 = w_2$ and $c_2 = w_1$, resulting in the following basis vectors: 
+
+        \begin{equation}
+            \left\{ \begin{array}{l}    v_1(w_2) = \begin{bmatrix} w_1 \\ w_2 \end{bmatrix} = \bs{w} \\ 
+                                        v_2(-w_1) = \begin{bmatrix} w_2 \\ -w_1 \end{bmatrix} = \perp\bs{w} \end{array}\right.
+            \label{eq:Eq53}
+        \end{equation}
+    
+        Thus, the principal axes of the parabola are spanned by the vectors $\bs{w}$ and $\perp\bs{w}$, which serve as the foundation for the change-of-basis transformation in (22).
+        
+    \subsection{Proof related to Section 2.4: The focus of the parabola is located at the coordinates $(p_1,p_2)$ in the x-y plane.}
+
+        This proof establishes that the focus of the parabola derived in section 2.3 is the point $(p_1,p_2)$, when plotted in the x-y plane.
+        
+        To establish an expression for the focus of the parabola, complex-valued vectors are used to extract information from the conic equation in matrix form. The parabola is defined as the set of all points $(x,y)$ satisfying: 
+    
+        \setcounter{equation}{28}
+        \begin{equation}
+            \bs{x}^TA\bs{x}, \text{ where } \bs{x} = \begin{bmatrix} x \\ y \\ 1 \end{bmatrix} \text{ and } 
+            A = \begin{bmatrix} w_2^2               & -w_1w_2   & -r_1w_2 + 2r_2w_1 \\
+                                -w_1w_2             & w_1^2     & -r_1w_1 \\
+                                -r_1w_2 + 2r_2w_1   & -r_1w_1   & r_1^2\end{bmatrix}
+            \label{eq:Eq29}
+        \end{equation}
+    
+        From projective geometry, all tangent lines to a conic section can be expressed using the inverse of $A$. We define a line corresponding to the vector $\begin{bmatrix}U&V&W\end{bmatrix}^T$, representing the equation $Ux + Vy + W = 0$. Tangent lines to the parabola satisfy: 
+
+        \setcounter{equation}{53}
+        \begin{equation}
+            \begin{bmatrix} U \\ V \\ W \end{bmatrix}^T A^{-1} \begin{bmatrix} U \\ V \\ W \end{bmatrix} = 0
+            \text{, with the elements of } A^{-1} \text{ labeled as } A^{-1} = 
+            \begin{bmatrix} 2G & H & R \\ 
+                            H & 2K & S \\ 
+                            R & S  & 2T\end{bmatrix}
+            \label{eq:Eq54}
+        \end{equation}
+    
+        The focus of the parabola is determined using the elements of $A^{-1}$. Defining the focus as the complex number $F = x_F + iy_F$, corresponding to the point $(x_F,y_F)$ in the x-y plane, the focus of foci of the conic section are found by solving: 
+    
+        \begin{equation}
+            TF^2 - (R + iS)F + (G - K + iH) = 0
+            \label{eq:Eq55}
+        \end{equation}
+    
+        The inverse matrix $A^{-1}$ is then calculated:
+    
+        \begin{equation}
+            A^{-1} = 
+            \begin{bmatrix} 0 & \frac{-r_1}{2r_1w_1w_2 - 2r_2w_1^2} & \frac{-1}{2r_1w_2-2r_2w_1} \\ 
+                            \frac{-r_1}{2r_1w_1w_2 - 2r_2w_1^2} & \frac{-r_2}{r_1w_1w_2 - r_2w_1^2}   & \frac{-w_2}{2r_1w_1w_2 - 2r_2w_1^2} \\ 
+                            \frac{-1}{2r_1w_2-2r_2w_1} & \frac{-w_2}{2r_1w_1w_2 - 2r_2w_1^2} & 0
+            \end{bmatrix}
+            \label{eq:Eq56}
+        \end{equation}
+    
+        Because $G$ and $T$ are both zero, the equation for the focus simplifies and rearranges to: 
+    
+        \begin{equation}
+            F = \frac{-K + iH}{R + iS}
+            \label{eq:Eq57}
+        \end{equation}
+    
+        Substituting the remaining values, the focus is found to be:
+        
+        \begin{equation}
+            F = \frac{-r_2 + ir_1}{w_1 + iw_2}
+            \label{eq:Eq58}
+        \end{equation}
+    
+        Rearranging to separate real and imaginary components:
+
+        \begin{equation}
+            F = x_F + iy_F = \left(\frac{r_1w_2 - r_2w_1}{w_1^2 + w_2^2}\right) + i\left(\frac{r_1w_1 + r_2w_2}{w_1^2 + w_2^2}\right)
+            \label{eq:Eq59}
+        \end{equation}
+
+    
+        we find that $x_F = p_1$ and $y_F = p_2$, matching equation 24:
+
+        \setcounter{equation}{23}
+        \begin{equation}
+            \bs{p} = \begin{bmatrix}p_1,p_2\end{bmatrix}^T = \begin{bmatrix}
+                                                                \frac{r_1w_2 - r_2w_1}{w_1^2 + w_2^2},
+                                                                \frac{r_1w_1 + r_2w_2}{w_1^2 + w_2^2}\end{bmatrix}^T
+            \label{eq:Eq24}
+        \end{equation}
+    
+        Thus, the focus of the parabola will always lie at the coordinate $(p_1,p_2)$.
+
+    
+    \subsection{Proof related to Section 2.5.3: As $\theta$ changes with $p_1$ and $p_2$ held constant, the control frame rotates about $(p_1,p_2)$, the focus of the parabola}
+    
+        This proof establishes that when $p_1$ and $p_2$ are held constant and $\theta$ is changed, the control frame rotates in x-y space with the parabolic focus $(p_1,p_2)$ as the enter of rotation.
+    
+        As described in the main text, the position and rotation of the control frame is defined by the $[r_1,r_2,\theta]$ coordinate system. The coordinate transformation that expresses the values of $r_1$ and $r_2$ in terms of $p_1$ and $p_2$ is given by:
+    
+        \setcounter{equation}{7}
+        \begin{equation}
+            \bs{r} = W\bs{p} = \begin{bmatrix} w_2p_1 + w_1p_2 \\ w_2p_2 - w_1p_1\end{bmatrix}
+            \label{eq:Eq8}
+        \end{equation}
+    
+        To express $\bs{r}$ as a function of $\theta$, we expand the $\bs{w}$ terms using the definition in (6). This gives:
+    
+        \setcounter{equation}{59}
+        \begin{equation}
+            \bs{r}(\theta) = \begin{bmatrix}    (1 - s\cos\theta)p_1 + (s\sin)p_2 \\ 
+                                        (1 - s\cos\theta)p_2 - (s\sin)p_1\end{bmatrix}
+            \label{eq:Eq60}
+        \end{equation}
+    
+        Rearranging:
+        
+        \begin{equation}
+            \bs{r}(\theta) = 
+            \begin{bmatrix} sp_2\sin\theta - sp_1\cos\theta + p_1 \\ 
+                            -sp_1\sin\theta - sp_2\cos\theta + p_2 \end{bmatrix} 
+            = s\begin{bmatrix}    -p_1 & p_2 \\ 
+                                -p_2 & -p_1\end{bmatrix}
+            \begin{bmatrix} \cos\theta \\ \sin\theta \end{bmatrix} + \begin{bmatrix} p_1 \\ p_2 \end{bmatrix}      
+            = P\bs{c}(\theta) + \bs{p}
+            \label{eq:Eq61}
+        \end{equation}
+        
+        where
+    
+        \begin{equation}
+            P = s\begin{bmatrix}-p_1 & p_2 \\ -p_2 & -p_1\end{bmatrix}, 
+            \text{ and } c(\theta) = \begin{bmatrix}\cos\theta\\\sin\theta\end{bmatrix}
+            \label{eq:Eq63}
+        \end{equation}
+    
+        The rearranged expression for $\bs{r}(\theta)$ is equal to a transformed circle. The vector $\bs{c}(\theta)$ encodes the unit circle when plotted for all values of $\theta$. The circle is transformed by the matrix $P$, and its center is then shifted to lie on the coordinate values of the vector $\bs{p}$. The resulting shape defines the trajectory of the control frame as $\theta$ varies.
+    
+        Further manipulation of the expression allows $P$ to be rewritten as the product of terms:
+    
+        \begin{equation}
+            P = s\begin{bmatrix}-p_1 & p_2 \\ -p_2 & -p_1\end{bmatrix} 
+            = \left(s\sqrt{p_1^2 + p_2^2}\right)\begin{bmatrix}\frac{-p_1}{\sqrt{p_1^2 + p_2^2}} & \frac{p_2}{\sqrt{p_1^2 + p_2^2}} 
+                                                            \\ \frac{-p_2}{\sqrt{p_1^2 + p_2^2}} & \frac{-p_1}{\sqrt{p_1^2 + p_2^2}}\end{bmatrix}
+            =\left(s\sqrt{p_1^2 + p_2^2}\right)O
+            \label{eq:Eq63}
+        \end{equation}
+                
+        where
+    
+        \begin{equation}
+            O =\begin{bmatrix}\frac{-p_1}{\sqrt{p_1^2 + p_2^2}} & \frac{p_2}{\sqrt{p_1^2 + p_2^2}} 
+                                                            \\ \frac{-p_2}{\sqrt{p_1^2 + p_2^2}} & \frac{-p_1}{\sqrt{p_1^2 + p_2^2}}\end{bmatrix}
+            \label{eq:Eq64}
+        \end{equation}
+    
+        The key property of $O$ is that it is orthogonal, because it satisfies the identity $O^TO = I$ . Transformations by an orthogonal matrix preserve both angles and distances, allowing for rotation or reflection without distortion. Notably, the term $\left(s\sqrt{p_1^2 + p_2^2}\right)$ is a scalar value. A transformation by an orthogonal matrix multiplied by a scalar is equivalent to an orthogonal transformation followed by a scaling transformation. Therefore, as the unit circle $\bs{c}(\theta)$ is transformed by the matrix-vector product $P\bs{c}(\theta)$, the result remains an undistorted circle. The position of the control frame follows the trajectory $\bs{r}(\theta) = P\bs{c}(\theta) + \bs{p}$, which describes a circle centered at $\bs{p} = (p_1,p_2)$. As $\theta$ is changed, the control frame will simultaneously rotate by $\theta$ and traverse a circular arc with internal angle $\theta$. Therefore, the control frame rotates about the point $(p_1,p_2)$.   
+     
+    
+    
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%               JUPYTER NOTEBOOK BELOW                %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+\section{Whisker Frames - Symbolic Notebook}\label{whisker-frames---symbolic-notebook}
+
+2026 - For generating the equations of the Whisker Frames project
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{1}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} !pip install sympy}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{2}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}imports}
+\PY{k+kn}{import} \PY{n+nn}{sympy} \PY{k}{as} \PY{n+nn}{sym}
+\PY{k+kn}{from} \PY{n+nn}{sympy}\PY{n+nn}{.}\PY{n+nn}{solvers} \PY{k+kn}{import} \PY{n}{solve}
+\PY{k+kn}{from} \PY{n+nn}{sympy} \PY{k+kn}{import} \PY{n}{symbols}\PY{p}{,} \PY{n}{Matrix}\PY{p}{,} \PY{n}{sin}\PY{p}{,} \PY{n}{cos}\PY{p}{,} \PY{n}{tan}\PY{p}{,} \PY{n}{cot}\PY{p}{,} \PY{n}{atan}\PY{p}{,} \PY{n}{simplify}\PY{p}{,} \PY{n}{expand}\PY{p}{,} \PY{n}{Poly}\PY{p}{,} \PY{n}{Eq}\PY{p}{,} \PY{n}{integrate}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \subsection{Some helper functions for Equation display}\label{some-helper-functions-for-equation-display}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+        \prompt{In}{incolor}{3}{\boxspacing}
+        \begin{Verbatim}[commandchars=\\\{\}]
+        \PY{k}{def} \PY{n+nf}{multi\PYZus{}Eq}\PY{p}{(}\PY{n}{sides}\PY{p}{)}\PY{p}{:}
+            \PY{k}{if} \PY{n+nb}{len}\PY{p}{(}\PY{n}{sides}\PY{p}{)} \PY{o}{==} \PY{l+m+mi}{1}\PY{p}{:}
+                \PY{k}{raise} \PY{n+ne}{ValueError}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{must have at least 2 inputs}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+            \PY{k}{elif} \PY{n+nb}{len}\PY{p}{(}\PY{n}{sides}\PY{p}{)} \PY{o}{==} \PY{l+m+mi}{2}\PY{p}{:}
+                \PY{k}{return} \PY{n}{Eq}\PY{p}{(}\PY{o}{*}\PY{n}{sides}\PY{p}{,}\PY{n}{evaluate}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}
+            \PY{k}{elif} \PY{n+nb}{len}\PY{p}{(}\PY{n}{sides}\PY{p}{)} \PY{o}{\PYZgt{}} \PY{l+m+mi}{2}\PY{p}{:}
+                \PY{k}{return} \PY{n}{Eq}\PY{p}{(}\PY{n}{sides}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,}\PY{n}{multi\PYZus{}Eq}\PY{p}{(}\PY{n}{sides}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{:}\PY{p}{]}\PY{p}{)}\PY{p}{,}\PY{n}{evaluate}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}
+            \PY{k}{else}\PY{p}{:}
+                \PY{k}{raise} \PY{n+ne}{ValueError}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{not the right input}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+                
+        \PY{k}{def} \PY{n+nf}{Eqdisp}\PY{p}{(}\PY{o}{*}\PY{n}{args}\PY{p}{,}\PY{n}{label}\PY{o}{=}\PY{k+kc}{None}\PY{p}{,}\PY{n}{linebreak}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}\PY{p}{:}
+            \PY{n}{multi\PYZus{}list} \PY{o}{=} \PY{p}{[}\PY{n}{symbols}\PY{p}{(}\PY{n}{arg}\PY{p}{)} \PY{k}{if} \PY{n+nb}{type}\PY{p}{(}\PY{n}{arg}\PY{p}{)}\PY{o}{==}\PY{n+nb}{str} \PY{k}{else} \PY{n}{arg} \PY{k}{for} \PY{n}{arg} \PY{o+ow}{in} \PY{n}{args}\PY{p}{]} \PY{c+c1}{\PYZsh{}convert any strings to symbols}
+            \PY{k}{if} \PY{n+nb}{len}\PY{p}{(}\PY{n}{multi\PYZus{}list}\PY{p}{)} \PY{o}{==} \PY{l+m+mi}{1}\PY{p}{:}
+                \PY{n}{display\PYZus{}Eq} \PY{o}{=} \PY{n}{multi\PYZus{}list}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}
+            \PY{k}{else}\PY{p}{:}
+                \PY{n}{display\PYZus{}Eq} \PY{o}{=} \PY{n}{multi\PYZus{}Eq}\PY{p}{(}\PY{n}{multi\PYZus{}list}\PY{p}{)}
+            \PY{c+c1}{\PYZsh{}display!}
+            \PY{k}{if} \PY{n}{label} \PY{o+ow}{is} \PY{o+ow}{not} \PY{k+kc}{None}\PY{p}{:}
+                \PY{n+nb}{print}\PY{p}{(}\PY{n}{label}\PY{p}{)}
+            \PY{n}{display}\PY{p}{(}\PY{n}{display\PYZus{}Eq}\PY{p}{)}
+            \PY{k}{if} \PY{n}{linebreak}\PY{p}{:}
+                \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \end{Verbatim}
+        \end{tcolorbox}
+
+    \subsection{Symbols and setup}\label{symbols-and-setup}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+        \prompt{In}{incolor}{4}{\boxspacing}
+        \begin{Verbatim}[commandchars=\\\{\}]
+        \PY{c+c1}{\PYZsh{}display variables}
+        \PY{n}{r\PYZus{}d}\PY{p}{,}\PY{n}{u\PYZus{}d}\PY{p}{,}\PY{n}{w\PYZus{}d}\PY{p}{,}\PY{n}{phi\PYZus{}d} \PY{o}{=} \PY{n}{symbols}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{mathbf}\PY{l+s+si}{\PYZob{}r\PYZcb{}}\PY{l+s+s1}{,}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{mathbf}\PY{l+s+si}{\PYZob{}u\PYZcb{}}\PY{l+s+s1}{,}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{mathbf}\PY{l+s+si}{\PYZob{}w\PYZcb{}}\PY{l+s+s1}{,}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{Phi}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{c+c1}{\PYZsh{}configuration variables}
+        \PY{n}{r1}\PY{p}{,}\PY{n}{r2}\PY{p}{,}\PY{n}{th}\PY{p}{,}\PY{n}{u1}\PY{p}{,}\PY{n}{u2}\PY{p}{,}\PY{n}{w1}\PY{p}{,}\PY{n}{w2}\PY{p}{,}\PY{n}{a}\PY{p}{,}\PY{n}{b}\PY{p}{,}\PY{n}{p1}\PY{p}{,}\PY{n}{p2} \PY{o}{=} \PY{n}{symbols}\PY{p}{(}\PY{l+s+sa}{r}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{r1,r2,}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{theta,u1,u2,w1,w2,}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{alpha,}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{beta,p1,p2}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{real}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+        \PY{c+c1}{\PYZsh{}parameter and other variables}
+        \PY{n}{s}\PY{p}{,}\PY{n}{h}\PY{p}{,}\PY{n}{x}\PY{p}{,}\PY{n}{y} \PY{o}{=} \PY{n}{symbols}\PY{p}{(}\PY{l+s+sa}{r}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{s,h,x,y}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{real}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+        \PY{n}{lam} \PY{o}{=} \PY{n}{symbols}\PY{p}{(}\PY{l+s+sa}{r}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{lambda}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \end{Verbatim}
+        \end{tcolorbox}
+
+    \subsection{(For Section 2.2) A vector model for the mechanism configuration and whisker orientations}\label{a-vector-model-for-the-mechanism-configuration-and-whisker-orientations}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+        \prompt{In}{incolor}{5}{\boxspacing}
+        \begin{Verbatim}[commandchars=\\\{\}]
+        \PY{c+c1}{\PYZsh{}r vector}
+        \PY{n}{r} \PY{o}{=} \PY{n}{Matrix}\PY{p}{(}\PY{p}{[}\PY{n}{r1}\PY{p}{,}\PY{n}{r2}\PY{p}{]}\PY{p}{)}
+
+        \PY{c+c1}{\PYZsh{}\PYZdq{}x\PYZdq{} configuration}
+        \PY{n}{x\PYZus{}conf} \PY{o}{=} \PY{n}{Matrix}\PY{p}{(}\PY{p}{[}\PY{n}{r1}\PY{p}{,}\PY{n}{r2}\PY{p}{,}\PY{n}{th}\PY{p}{]}\PY{p}{)}
+
+        \PY{c+c1}{\PYZsh{}define w}
+        \PY{n}{w} \PY{o}{=} \PY{n}{Matrix}\PY{p}{(}\PY{p}{[}\PY{n}{w1}\PY{p}{,}\PY{n}{w2}\PY{p}{]}\PY{p}{)}
+        \PY{n}{w\PYZus{}x} \PY{o}{=} \PY{n}{Matrix}\PY{p}{(}\PY{p}{[}\PY{n}{s}\PY{o}{*}\PY{n}{sin}\PY{p}{(}\PY{n}{th}\PY{p}{)}\PY{p}{,} \PY{l+m+mi}{1}\PY{o}{\PYZhy{}}\PY{n}{s}\PY{o}{*}\PY{n}{cos}\PY{p}{(}\PY{n}{th}\PY{p}{)}\PY{p}{]}\PY{p}{)}
+
+        \PY{c+c1}{\PYZsh{}define u as function of r1,r2,theta and as function of r1,r2,w1,w2}
+        \PY{n}{u\PYZus{}x} \PY{o}{=} \PY{n}{w\PYZus{}x}\PY{o}{*}\PY{n}{h} \PY{o}{\PYZhy{}} \PY{n}{r}
+        \PY{n}{u\PYZus{}w} \PY{o}{=} \PY{n}{w}\PY{o}{*}\PY{n}{h} \PY{o}{\PYZhy{}} \PY{n}{r}
+        \end{Verbatim}
+        \end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+        \prompt{In}{incolor}{6}{\boxspacing}
+        \begin{Verbatim}[commandchars=\\\{\}]
+        \PY{c+c1}{\PYZsh{}define protraction in multiple forms}
+        \PY{n}{prot\PYZus{}x} \PY{o}{=} \PY{n}{atan}\PY{p}{(}\PY{p}{(}\PY{n}{u\PYZus{}x}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)}\PY{o}{/}\PY{p}{(}\PY{n}{u\PYZus{}x}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}\PY{p}{)}
+        \PY{n}{prot\PYZus{}w} \PY{o}{=} \PY{n}{atan}\PY{p}{(}\PY{p}{(}\PY{n}{u\PYZus{}w}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)}\PY{o}{/}\PY{p}{(}\PY{n}{u\PYZus{}w}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}\PY{p}{)}
+        \PY{n}{prot\PYZus{}u} \PY{o}{=} \PY{n}{atan}\PY{p}{(}\PY{p}{(}\PY{n}{u2}\PY{p}{)}\PY{o}{/}\PY{p}{(}\PY{n}{u1}\PY{p}{)}\PY{p}{)}
+
+        \PY{c+c1}{\PYZsh{}define spread}
+        \PY{n}{sprd\PYZus{}x} \PY{o}{=} \PY{n}{sym}\PY{o}{.}\PY{n}{diff}\PY{p}{(}\PY{n}{prot\PYZus{}x}\PY{p}{,}\PY{n}{h}\PY{p}{)}
+        \PY{n}{sprd\PYZus{}w} \PY{o}{=} \PY{n}{simplify}\PY{p}{(}\PY{n}{sym}\PY{o}{.}\PY{n}{diff}\PY{p}{(}\PY{n}{prot\PYZus{}w}\PY{p}{,}\PY{n}{h}\PY{p}{)}\PY{p}{)}
+        \end{Verbatim}
+        \end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+        \prompt{In}{incolor}{7}{\boxspacing}
+        \begin{Verbatim}[commandchars=\\\{\}]
+        \PY{c+c1}{\PYZsh{}2.2 equation displays}
+        \PY{n}{disps} \PY{o}{=} \PY{k+kc}{True}
+        \PY{k}{if} \PY{n}{disps}\PY{p}{:}
+            \PY{c+c1}{\PYZsh{}definitions}
+            \PY{n}{Eqdisp}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{r}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{r}\PY{p}{,}\PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{the vectors r and w}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{linebreak}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}
+            \PY{n}{Eqdisp}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{w}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{w\PYZus{}x}\PY{p}{,}\PY{n}{w}\PY{p}{)}
+            
+            \PY{c+c1}{\PYZsh{}u}
+            \PY{n}{Eqdisp}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{u}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{symbols}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{w}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{o}{*}\PY{n}{h} \PY{o}{\PYZhy{}} \PY{n}{symbols}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{r}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{,}\PY{n}{u\PYZus{}w}\PY{p}{,}\PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{the vector u is defined as a function of r and w}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+            
+            \PY{c+c1}{\PYZsh{}phi and dphi}
+            \PY{n}{Eqdisp}\PY{p}{(}\PY{l+s+sa}{r}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{Phi}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{prot\PYZus{}u}\PY{p}{,}\PY{n}{prot\PYZus{}w}\PY{p}{,}\PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Phi, or protraction, is defined like so}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+            \PY{n}{Eqdisp}\PY{p}{(}\PY{l+s+sa}{r}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{frac}\PY{l+s+s1}{\PYZob{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{mathrm}\PY{l+s+si}{\PYZob{}d\PYZcb{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{Phi\PYZcb{}}\PY{l+s+s1}{\PYZob{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{mathrm}\PY{l+s+si}{\PYZob{}d\PYZcb{}}\PY{l+s+s1}{h\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{sprd\PYZus{}w}\PY{p}{,}\PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{the derivative of phi, spread, is defined like so}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \end{Verbatim}
+        \end{tcolorbox}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+        the vectors r and w
+            \end{Verbatim}
+
+            $\displaystyle r = \left[\begin{matrix}r_{1}\\r_{2}\end{matrix}\right]$
+
+            
+            $\displaystyle w = \left[\begin{matrix}s \sin{\left(\theta \right)}\\- s \cos{\left(\theta \right)} + 1\end{matrix}\right] = \left[\begin{matrix}w_{1}\\w_{2}\end{matrix}\right]$
+
+            
+            \begin{Verbatim}[commandchars=\\\{\}]
+
+
+        the vector u is defined as a function of r and w
+            \end{Verbatim}
+
+            $\displaystyle u = h w - r = \left[\begin{matrix}h w_{1} - r_{1}\\h w_{2} - r_{2}\end{matrix}\right]$
+
+            
+            \begin{Verbatim}[commandchars=\\\{\}]
+
+
+        Phi, or protraction, is defined like so
+            \end{Verbatim}
+
+            $\displaystyle \Phi = \operatorname{atan}{\left(\frac{u_{2}}{u_{1}} \right)} = \operatorname{atan}{\left(\frac{h w_{2} - r_{2}}{h w_{1} - r_{1}} \right)}$
+
+            
+            \begin{Verbatim}[commandchars=\\\{\}]
+
+
+        the derivative of phi, spread, is defined like so
+            \end{Verbatim}
+
+            $\displaystyle \frac{\mathrm{d}\Phi}{\mathrm{d}h} = \frac{- w_{1} \left(h w_{2} - r_{2}\right) + w_{2} \left(h w_{1} - r_{1}\right)}{\left(h w_{1} - r_{1}\right)^{2} + \left(h w_{2} - r_{2}\right)^{2}}$
+
+            
+            \begin{Verbatim}[commandchars=\\\{\}]
+
+
+            \end{Verbatim}
+
+    \subsection{(For Section 2.3) Generalizing the analysis to every point in the x-y plane reveals that every control frame configuration is associated with a parabola}\label{generalizing-the-analysis-to-every-point-in-the-x-y-plane-reveals-that-every-control-frame-configuration-is-associated-with-a-parabola}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+        \prompt{In}{incolor}{8}{\boxspacing}
+        \begin{Verbatim}[commandchars=\\\{\}]
+        \PY{c+c1}{\PYZsh{}the arbitrary point will be defined here as z = (x,y)}
+        \PY{n}{z} \PY{o}{=} \PY{n}{Matrix}\PY{p}{(}\PY{p}{[}\PY{n}{x}\PY{p}{,}\PY{n}{y}\PY{p}{]}\PY{p}{)}
+
+        \PY{c+c1}{\PYZsh{}q vector}
+        \PY{n}{q} \PY{o}{=} \PY{n}{Matrix}\PY{p}{(}\PY{p}{[}\PY{n}{x}\PY{p}{,}\PY{n}{y}\PY{o}{\PYZhy{}}\PY{n}{h}\PY{p}{]}\PY{p}{)}
+
+        \PY{c+c1}{\PYZsh{}magnitude of cross(u,q)}
+        \PY{n}{ucrossq\PYZus{}x} \PY{o}{=} \PY{p}{(}\PY{n}{u\PYZus{}x}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{*}\PY{n}{q}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)}\PY{o}{\PYZhy{}}\PY{p}{(}\PY{n}{u\PYZus{}x}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{*}\PY{n}{q}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}
+        \PY{n}{ucrossq\PYZus{}w} \PY{o}{=} \PY{p}{(}\PY{n}{u\PYZus{}w}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{*}\PY{n}{q}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)}\PY{o}{\PYZhy{}}\PY{p}{(}\PY{n}{u\PYZus{}w}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{*}\PY{n}{q}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}
+
+        \PY{c+c1}{\PYZsh{}solve for h when ucrossq = 0}
+        \PY{n}{solveh\PYZus{}x} \PY{o}{=} \PY{n}{solve}\PY{p}{(}\PY{n}{ucrossq\PYZus{}x}\PY{p}{,}\PY{n}{h}\PY{p}{)}
+        \PY{n}{solveh\PYZus{}w} \PY{o}{=} \PY{n}{solve}\PY{p}{(}\PY{n}{ucrossq\PYZus{}w}\PY{p}{,}\PY{n}{h}\PY{p}{)}
+        \end{Verbatim}
+        \end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+        \prompt{In}{incolor}{9}{\boxspacing}
+        \begin{Verbatim}[commandchars=\\\{\}]
+        \PY{c+c1}{\PYZsh{}get the discriminant (inside square root term) of the solution}
+        \PY{n}{sqrt\PYZus{}term\PYZus{}x} \PY{o}{=} \PY{n}{solveh\PYZus{}x}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{args}\PY{p}{[}\PY{l+m+mi}{3}\PY{p}{]}\PY{o}{.}\PY{n}{args}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}\PY{o}{.}\PY{n}{args}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}
+        \PY{n}{sqrt\PYZus{}term\PYZus{}w} \PY{o}{=} \PY{o}{\PYZhy{}}\PY{n}{solveh\PYZus{}w}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{args}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}\PY{o}{.}\PY{n}{args}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}
+
+        \PY{c+c1}{\PYZsh{}the conic equation is equal to the descriminant}
+        \PY{n}{conic\PYZus{}x} \PY{o}{=} \PY{n}{sqrt\PYZus{}term\PYZus{}x}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}
+        \PY{n}{conic\PYZus{}w} \PY{o}{=} \PY{n}{sqrt\PYZus{}term\PYZus{}w}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}
+
+        \PY{c+c1}{\PYZsh{}wrap the conic in a Polynomial object}
+        \PY{n}{conic\PYZus{}poly\PYZus{}x} \PY{o}{=} \PY{n}{Poly}\PY{p}{(}\PY{n}{conic\PYZus{}x}\PY{p}{,} \PY{p}{[}\PY{n}{x}\PY{p}{,}\PY{n}{y}\PY{p}{]}\PY{p}{)}
+        \PY{n}{conic\PYZus{}poly\PYZus{}w} \PY{o}{=} \PY{n}{Poly}\PY{p}{(}\PY{n}{conic\PYZus{}w}\PY{p}{,} \PY{p}{[}\PY{n}{x}\PY{p}{,}\PY{n}{y}\PY{p}{]}\PY{p}{)}
+
+        \PY{c+c1}{\PYZsh{}Get coefficients}
+        \PY{n}{coeffs\PYZus{}x} \PY{o}{=} \PY{n}{conic\PYZus{}poly\PYZus{}x}\PY{o}{.}\PY{n}{coeffs}\PY{p}{(}\PY{p}{)}
+        \PY{n}{coeffs\PYZus{}w} \PY{o}{=} \PY{n}{conic\PYZus{}poly\PYZus{}w}\PY{o}{.}\PY{n}{coeffs}\PY{p}{(}\PY{p}{)}
+        \end{Verbatim}
+        \end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+        \prompt{In}{incolor}{10}{\boxspacing}
+        \begin{Verbatim}[commandchars=\\\{\}]
+        \PY{c+c1}{\PYZsh{}piece together the matrix form }
+        \PY{n}{a}\PY{p}{,}\PY{n}{b}\PY{p}{,}\PY{n}{d}\PY{p}{,}\PY{n}{c}\PY{p}{,}\PY{n}{e}\PY{p}{,}\PY{n}{f} \PY{o}{=} \PY{n}{coeffs\PYZus{}x}
+        \PY{n}{A\PYZus{}x} \PY{o}{=} \PY{n}{Matrix}\PY{p}{(}\PY{p}{[}\PY{p}{[}\PY{n}{a}\PY{p}{,}\PY{n}{b}\PY{o}{/}\PY{l+m+mi}{2}\PY{p}{,}\PY{n}{d}\PY{o}{/}\PY{l+m+mi}{2}\PY{p}{]}\PY{p}{,}
+                    \PY{p}{[}\PY{n}{b}\PY{o}{/}\PY{l+m+mi}{2}\PY{p}{,}\PY{n}{c}\PY{p}{,}\PY{n}{e}\PY{o}{/}\PY{l+m+mi}{2}\PY{p}{]}\PY{p}{,}
+                    \PY{p}{[}\PY{n}{d}\PY{o}{/}\PY{l+m+mi}{2}\PY{p}{,}\PY{n}{e}\PY{o}{/}\PY{l+m+mi}{2}\PY{p}{,}\PY{n}{f}\PY{p}{]}\PY{p}{]}\PY{p}{)}
+        \PY{n}{a}\PY{p}{,}\PY{n}{b}\PY{p}{,}\PY{n}{d}\PY{p}{,}\PY{n}{c}\PY{p}{,}\PY{n}{e}\PY{p}{,}\PY{n}{f} \PY{o}{=} \PY{n}{coeffs\PYZus{}w}
+        \PY{n}{A\PYZus{}w} \PY{o}{=} \PY{n}{Matrix}\PY{p}{(}\PY{p}{[}\PY{p}{[}\PY{n}{a}\PY{p}{,}\PY{n}{b}\PY{o}{/}\PY{l+m+mi}{2}\PY{p}{,}\PY{n}{d}\PY{o}{/}\PY{l+m+mi}{2}\PY{p}{]}\PY{p}{,}
+                    \PY{p}{[}\PY{n}{b}\PY{o}{/}\PY{l+m+mi}{2}\PY{p}{,}\PY{n}{c}\PY{p}{,}\PY{n}{e}\PY{o}{/}\PY{l+m+mi}{2}\PY{p}{]}\PY{p}{,}
+                    \PY{p}{[}\PY{n}{d}\PY{o}{/}\PY{l+m+mi}{2}\PY{p}{,}\PY{n}{e}\PY{o}{/}\PY{l+m+mi}{2}\PY{p}{,}\PY{n}{f}\PY{p}{]}\PY{p}{]}\PY{p}{)}
+
+        \PY{c+c1}{\PYZsh{}classification}
+        \PY{n}{A33} \PY{o}{=} \PY{n}{A\PYZus{}w}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{:}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{:}\PY{l+m+mi}{2}\PY{p}{]}
+        \PY{n}{detA33} \PY{o}{=} \PY{n}{A33}\PY{o}{.}\PY{n}{det}\PY{p}{(}\PY{p}{)}
+
+        \PY{c+c1}{\PYZsh{}degenerate conditions}
+        \PY{n}{degeneracy} \PY{o}{=} \PY{n}{A\PYZus{}w}\PY{o}{.}\PY{n}{det}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{simplify}\PY{p}{(}\PY{p}{)}
+        \end{Verbatim}
+        \end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+        \prompt{In}{incolor}{11}{\boxspacing}
+        \begin{Verbatim}[commandchars=\\\{\}]
+        \PY{c+c1}{\PYZsh{}2.3 equation displays}
+        \PY{n}{disps} \PY{o}{=} \PY{k+kc}{True}
+        \PY{k}{if} \PY{n}{disps}\PY{p}{:}
+            \PY{c+c1}{\PYZsh{}setup}
+            \PY{n}{Eqdisp}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{q}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{q}\PY{p}{,}\PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{the vector q}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+            \PY{n}{Eqdisp}\PY{p}{(}\PY{n}{ucrossq\PYZus{}w}\PY{p}{,}\PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{the value of |u x q|}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+            
+            \PY{c+c1}{\PYZsh{}solving for the parabola}
+            \PY{n}{Eqdisp}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{h}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{solveh\PYZus{}w}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,}\PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{solving for h when u x q = 0}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+            \PY{n}{Eqdisp}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{conic}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{conic\PYZus{}w}\PY{p}{,}\PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{value of the discriminant is a conic section (parabola)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+            
+            \PY{c+c1}{\PYZsh{}matrix form and degeneracy}
+            \PY{n}{Eqdisp}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{conic}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+sa}{r}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZob{}}\PY{l+s+s1}{z\PYZca{}T\PYZcb{}Az}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{we can express the parabola in matrix form}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{linebreak}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}
+            \PY{n}{Eqdisp}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{A}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{A\PYZus{}w}\PY{p}{,}\PY{n}{linebreak}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}
+            \PY{n}{Eqdisp}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{z}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{Matrix}\PY{p}{(}\PY{p}{[}\PY{n}{x}\PY{p}{,}\PY{n}{y}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)}\PY{p}{)}
+            \PY{n}{Eqdisp}\PY{p}{(}\PY{n}{degeneracy}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{the parabola is degenerate when the following expression is satisfied}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+            
+            
+        \end{Verbatim}
+        \end{tcolorbox}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+        the vector q
+            \end{Verbatim}
+
+            $\displaystyle q = \left[\begin{matrix}x\\- h + y\end{matrix}\right]$
+
+            
+            \begin{Verbatim}[commandchars=\\\{\}]
+
+
+        the value of |u x q|
+            \end{Verbatim}
+
+            $\displaystyle - x \left(h w_{2} - r_{2}\right) + \left(- h + y\right) \left(h w_{1} - r_{1}\right)$
+
+            
+            \begin{Verbatim}[commandchars=\\\{\}]
+
+
+        solving for h when u x q = 0
+            \end{Verbatim}
+
+            $\displaystyle h = \frac{r_{1} + w_{1} y - w_{2} x - \sqrt{r_{1}^{2} - 2 r_{1} w_{1} y - 2 r_{1} w_{2} x + 4 r_{2} w_{1} x + w_{1}^{2} y^{2} - 2 w_{1} w_{2} x y + w_{2}^{2} x^{2}}}{2 w_{1}}$
+
+            
+            \begin{Verbatim}[commandchars=\\\{\}]
+
+
+        value of the discriminant is a conic section (parabola)
+            \end{Verbatim}
+
+            $\displaystyle conic = r_{1}^{2} - 2 r_{1} w_{1} y - 2 r_{1} w_{2} x + 4 r_{2} w_{1} x + w_{1}^{2} y^{2} - 2 w_{1} w_{2} x y + w_{2}^{2} x^{2}$
+
+            
+            \begin{Verbatim}[commandchars=\\\{\}]
+
+
+        we can express the parabola in matrix form
+            \end{Verbatim}
+
+            $\displaystyle conic = {z^T}Az$
+
+            
+            $\displaystyle A = \left[\begin{matrix}w_{2}^{2} & - w_{1} w_{2} & - r_{1} w_{2} + 2 r_{2} w_{1}\\- w_{1} w_{2} & w_{1}^{2} & - r_{1} w_{1}\\- r_{1} w_{2} + 2 r_{2} w_{1} & - r_{1} w_{1} & r_{1}^{2}\end{matrix}\right]$
+
+            
+            $\displaystyle z = \left[\begin{matrix}x\\y\\1\end{matrix}\right]$
+
+            
+            \begin{Verbatim}[commandchars=\\\{\}]
+
+
+        the parabola is degenerate when the following expression is satisfied
+            \end{Verbatim}
+
+            $\displaystyle 4 w_{1}^{2} \left(- r_{1}^{2} w_{2}^{2} + 2 r_{1} r_{2} w_{1} w_{2} - r_{2}^{2} w_{1}^{2}\right) = 0$
+
+            
+            \begin{Verbatim}[commandchars=\\\{\}]
+
+
+            \end{Verbatim}
+
+    \subsection{(For Section 2.4) A coordinate transformation relates each control frame configuration to the position and orientation of its associated parabola.}\label{a-coordinate-transformation-relates-each-control-frame-configuration-to-the-position-and-orientation-of-its-associated-parabola.}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+        \prompt{In}{incolor}{12}{\boxspacing}
+        \begin{Verbatim}[commandchars=\\\{\}]
+        \PY{c+c1}{\PYZsh{}find the axes of the parabola via principal axis theorem (only doing this for A\PYZus{}w)}
+        \PY{n}{A33} \PY{o}{=} \PY{n}{A\PYZus{}w}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{:}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{:}\PY{l+m+mi}{2}\PY{p}{]}
+        \PY{n}{A\PYZus{}ev} \PY{o}{=} \PY{n}{A33}\PY{o}{.}\PY{n}{eigenvects}\PY{p}{(}\PY{p}{)}
+        \PY{n}{evec1}\PY{p}{,}\PY{n}{evec2} \PY{o}{=} \PY{n}{A\PYZus{}ev}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{n}{A\PYZus{}ev}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}
+
+        \PY{c+c1}{\PYZsh{}define change\PYZhy{}of\PYZhy{}basis matrix W}
+        \PY{n}{W} \PY{o}{=} \PY{n}{Matrix}\PY{p}{(}\PY{p}{[}\PY{p}{[}\PY{n}{w2}\PY{p}{,}\PY{n}{w1}\PY{p}{]}\PY{p}{,}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{n}{w1}\PY{p}{,}\PY{n}{w2}\PY{p}{]}\PY{p}{]}\PY{p}{)}
+        \PY{n}{W\PYZus{}inv} \PY{o}{=} \PY{n}{W}\PY{o}{.}\PY{n}{inv}\PY{p}{(}\PY{p}{)}
+
+        \PY{c+c1}{\PYZsh{}define p vector}
+        \PY{n}{p\PYZus{}p} \PY{o}{=} \PY{n}{Matrix}\PY{p}{(}\PY{p}{[}\PY{n}{p1}\PY{p}{,}\PY{n}{p2}\PY{p}{]}\PY{p}{)}
+
+        \PY{c+c1}{\PYZsh{}get p to r conversions}
+        \PY{n}{r\PYZus{}p} \PY{o}{=} \PY{n}{W}\PY{o}{*}\PY{n}{p\PYZus{}p}
+        \PY{n}{p\PYZus{}r} \PY{o}{=} \PY{n}{W\PYZus{}inv}\PY{o}{*}\PY{n}{r}
+        \PY{n}{p\PYZus{}x} \PY{o}{=} \PY{n}{simplify}\PY{p}{(}\PY{n}{p\PYZus{}r}\PY{o}{.}\PY{n}{subs}\PY{p}{(}\PY{p}{\PYZob{}}\PY{n}{w1}\PY{p}{:}\PY{n}{w\PYZus{}x}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,}\PY{n}{w2}\PY{p}{:}\PY{n}{w\PYZus{}x}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{\PYZcb{}}\PY{p}{)}\PY{p}{)}
+
+        \PY{c+c1}{\PYZsh{}new configuration}
+        \PY{n}{x\PYZus{}3\PYZus{}3} \PY{o}{=} \PY{n}{Matrix}\PY{p}{(}\PY{p}{[}\PY{n}{p1}\PY{p}{,}\PY{n}{p2}\PY{p}{,}\PY{n}{th}\PY{p}{]}\PY{p}{)}
+        \end{Verbatim}
+        \end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+        \prompt{In}{incolor}{13}{\boxspacing}
+        \begin{Verbatim}[commandchars=\\\{\}]
+        \PY{c+c1}{\PYZsh{}2.4 displays}
+        \PY{n}{Eqdisp}\PY{p}{(}\PY{l+s+sa}{r}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{A\PYZus{}}\PY{l+s+si}{\PYZob{}33\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{A33}\PY{p}{,}\PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{The 2x2 submatrix}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{n}{Eqdisp}\PY{p}{(}\PY{l+s+sa}{r}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{v\PYZus{}}\PY{l+s+si}{\PYZob{}1\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{evec1}\PY{p}{,}\PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Calculate the eigenvectors of A33: v1 and v2}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{linebreak}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}
+        \PY{n}{Eqdisp}\PY{p}{(}\PY{l+s+sa}{r}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{v\PYZus{}}\PY{l+s+si}{\PYZob{}2\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{evec2}\PY{p}{)}
+        \PY{n}{Eqdisp}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{W}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{W}\PY{p}{,}\PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{The change of basis matrix}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{n}{Eqdisp}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{r}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Wp}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{r\PYZus{}p}\PY{p}{,}\PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{r in terms of p}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{n}{Eqdisp}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{p}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+sa}{r}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{W\PYZca{}}\PY{l+s+s1}{\PYZob{}}\PY{l+s+s1}{\PYZhy{}1\PYZcb{}r}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{p\PYZus{}r}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{parabolicfocus}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{p in terms of r}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{n}{Eqdisp}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{p}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{p\PYZus{}x}\PY{p}{,}\PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{p in terms of r, s, theta}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \end{Verbatim}
+        \end{tcolorbox}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+        The 2x2 submatrix
+            \end{Verbatim}
+
+            $\displaystyle A_{33} = \left[\begin{matrix}w_{2}^{2} & - w_{1} w_{2}\\- w_{1} w_{2} & w_{1}^{2}\end{matrix}\right]$
+
+            
+            \begin{Verbatim}[commandchars=\\\{\}]
+
+
+        Calculate the eigenvectors of A33: v1 and v2
+            \end{Verbatim}
+
+            $\displaystyle v_{1} = \left[\begin{matrix}\frac{w_{1}}{w_{2}}\\1\end{matrix}\right]$
+
+            
+            $\displaystyle v_{2} = \left[\begin{matrix}- \frac{w_{2}}{w_{1}}\\1\end{matrix}\right]$
+
+            
+            \begin{Verbatim}[commandchars=\\\{\}]
+
+
+        The change of basis matrix
+            \end{Verbatim}
+
+            $\displaystyle W = \left[\begin{matrix}w_{2} & w_{1}\\- w_{1} & w_{2}\end{matrix}\right]$
+
+            
+            \begin{Verbatim}[commandchars=\\\{\}]
+
+
+        r in terms of p
+            \end{Verbatim}
+
+            $\displaystyle r = Wp = \left[\begin{matrix}p_{1} w_{2} + p_{2} w_{1}\\- p_{1} w_{1} + p_{2} w_{2}\end{matrix}\right]$
+
+            
+            \begin{Verbatim}[commandchars=\\\{\}]
+
+
+        p in terms of r
+            \end{Verbatim}
+
+            $\displaystyle p = W^{-1}r = \left[\begin{matrix}\frac{r_{1} w_{2}}{w_{1}^{2} + w_{2}^{2}} - \frac{r_{2} w_{1}}{w_{1}^{2} + w_{2}^{2}}\\\frac{r_{1} w_{1}}{w_{1}^{2} + w_{2}^{2}} + \frac{r_{2} w_{2}}{w_{1}^{2} + w_{2}^{2}}\end{matrix}\right] = parabolicfocus$
+
+            
+            \begin{Verbatim}[commandchars=\\\{\}]
+
+
+        p in terms of r, s, theta
+            \end{Verbatim}
+
+            $\displaystyle p = \left[\begin{matrix}\frac{- r_{1} s \cos{\left(\theta \right)} + r_{1} - r_{2} s \sin{\left(\theta \right)}}{s^{2} - 2 s \cos{\left(\theta \right)} + 1}\\\frac{r_{1} s \sin{\left(\theta \right)} - r_{2} s \cos{\left(\theta \right)} + r_{2}}{s^{2} - 2 s \cos{\left(\theta \right)} + 1}\end{matrix}\right]$
+
+            
+            \begin{Verbatim}[commandchars=\\\{\}]
+
+
+            \end{Verbatim}
+
+    \subsection{(For Section 2.5) The new coordinate system allows for independent control of protraction and fanning}\label{the-new-coordinate-system-allows-for-independent-control-of-protraction-and-fanning}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+        \prompt{In}{incolor}{14}{\boxspacing}
+        \begin{Verbatim}[commandchars=\\\{\}]
+        \PY{c+c1}{\PYZsh{}get u in terms of p. Simplify using U matrix}
+        \PY{n}{u\PYZus{}p} \PY{o}{=} \PY{n}{w}\PY{o}{*}\PY{n}{h}\PY{o}{\PYZhy{}}\PY{n}{r\PYZus{}p}
+        \PY{n}{U} \PY{o}{=} \PY{n}{Matrix}\PY{p}{(}\PY{p}{[}\PY{p}{[}\PY{n}{h}\PY{o}{\PYZhy{}}\PY{n}{p2}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{n}{p1}\PY{p}{]}\PY{p}{,}\PY{p}{[}\PY{n}{p1}\PY{p}{,}\PY{n}{h}\PY{o}{\PYZhy{}}\PY{n}{p2}\PY{p}{]}\PY{p}{]}\PY{p}{)}
+        \PY{c+c1}{\PYZsh{} simplify(u\PYZus{}p[0]**2 + u\PYZus{}p[1]**2)}
+
+        \PY{c+c1}{\PYZsh{}calculate protraction and spread}
+        \PY{n}{prot\PYZus{}p} \PY{o}{=} \PY{n}{atan}\PY{p}{(}\PY{p}{(}\PY{n}{u\PYZus{}p}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)}\PY{o}{/}\PY{p}{(}\PY{n}{u\PYZus{}p}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}\PY{p}{)}
+        \PY{n}{sprd\PYZus{}p} \PY{o}{=} \PY{n}{simplify}\PY{p}{(}\PY{n}{sym}\PY{o}{.}\PY{n}{diff}\PY{p}{(}\PY{n}{prot\PYZus{}p}\PY{p}{,}\PY{n}{h}\PY{p}{)}\PY{p}{)}
+
+        \PY{c+c1}{\PYZsh{}more justification for sprd\PYZus{}p}
+        \PY{n}{sprd\PYZus{}num} \PY{o}{=} \PY{n}{expand}\PY{p}{(}\PY{n}{u\PYZus{}p}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{)}
+        \PY{n}{sprd\PYZus{}denom} \PY{o}{=} \PY{n}{expand}\PY{p}{(}\PY{n}{u\PYZus{}p}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2} \PY{o}{+} \PY{n}{u\PYZus{}p}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{)}
+        \PY{c+c1}{\PYZsh{} Eqdisp(\PYZsq{}num\PYZsq{},sprd\PYZus{}num)}
+        \PY{c+c1}{\PYZsh{} Eqdisp(\PYZsq{}denom\PYZsq{},sprd\PYZus{}denom)}
+
+        \PY{c+c1}{\PYZsh{}differentiating phi with respect to theta...}
+        \PY{n}{dphi\PYZus{}dth} \PY{o}{=} \PY{n}{simplify}\PY{p}{(}\PY{n}{prot\PYZus{}p}\PY{o}{.}\PY{n}{subs}\PY{p}{(}\PY{p}{\PYZob{}}\PY{n}{w1}\PY{p}{:}\PY{n}{w\PYZus{}x}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,}\PY{n}{w2}\PY{p}{:}\PY{n}{w\PYZus{}x}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{\PYZcb{}}\PY{p}{)}\PY{o}{.}\PY{n}{diff}\PY{p}{(}\PY{n}{th}\PY{p}{)}\PY{p}{)}
+
+        \PY{c+c1}{\PYZsh{}verifying the expression in (31) is a correct antiderivative (this expression was obtained by hand, verified here)}
+        \PY{n}{soln\PYZus{}31} \PY{o}{=} \PY{n}{th}\PY{o}{\PYZhy{}}\PY{n}{sym}\PY{o}{.}\PY{n}{atan}\PY{p}{(}\PY{p}{(}\PY{n}{s}\PY{o}{\PYZhy{}}\PY{n}{cos}\PY{p}{(}\PY{n}{th}\PY{p}{)}\PY{p}{)}\PY{o}{/}\PY{p}{(}\PY{n}{sin}\PY{p}{(}\PY{n}{th}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+        \PY{n}{is\PYZus{}d31\PYZus{}30} \PY{o}{=} \PY{n}{dphi\PYZus{}dth}\PY{o}{.}\PY{n}{equals}\PY{p}{(}\PY{n}{soln\PYZus{}31}\PY{o}{.}\PY{n}{diff}\PY{p}{(}\PY{n}{th}\PY{p}{)}\PY{p}{)}
+        \end{Verbatim}
+        \end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+        \prompt{In}{incolor}{15}{\boxspacing}
+        \begin{Verbatim}[commandchars=\\\{\}]
+        \PY{c+c1}{\PYZsh{}2.5 displays}
+        \PY{n}{Eqdisp}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{u}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{symbols}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{w}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{o}{*}\PY{n}{h}\PY{o}{\PYZhy{}}\PY{n}{symbols}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Wp}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{,}\PY{n}{u\PYZus{}p}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Uw}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{the u vector in terms of p}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{linebreak}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}
+        \PY{n}{Eqdisp}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{U}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{U}\PY{p}{)}
+        \PY{n}{Eqdisp}\PY{p}{(}\PY{n}{symbols}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{u}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{o}{\PYZhy{}}\PY{n}{symbols}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Uw}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{,}\PY{n}{simplify}\PY{p}{(}\PY{n}{u\PYZus{}p}\PY{o}{\PYZhy{}}\PY{n}{U}\PY{o}{*}\PY{n}{w}\PY{p}{)}\PY{p}{,}\PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{check that matrix U is correctly defined}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{n}{Eqdisp}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Phi}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{prot\PYZus{}p}\PY{p}{,}\PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{protraction with respect to p}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{n}{Eqdisp}\PY{p}{(}\PY{l+s+sa}{r}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{frac}\PY{l+s+s1}{\PYZob{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{mathrm}\PY{l+s+si}{\PYZob{}d\PYZcb{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{Phi\PYZcb{}}\PY{l+s+s1}{\PYZob{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{mathrm}\PY{l+s+si}{\PYZob{}d\PYZcb{}}\PY{l+s+s1}{h\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{sprd\PYZus{}p}\PY{p}{,}\PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{spread with respect to p}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{n}{Eqdisp}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{(31)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{soln\PYZus{}31}\PY{p}{,}\PY{n}{label}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{equation 31 is the antiderivative of dphi/dth. (hard\PYZhy{}coded here, obtained on paper)}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+        \PY{n}{Eqdisp}\PY{p}{(}\PY{n}{is\PYZus{}d31\PYZus{}30}\PY{p}{,}\PY{n}{label}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{is the expression in (31) a correct antiderivative of dphi/dth?}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+        \end{Verbatim}
+        \end{tcolorbox}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+        the u vector in terms of p
+            \end{Verbatim}
+
+            $\displaystyle u = - Wp + h w = \left[\begin{matrix}h w_{1} - p_{1} w_{2} - p_{2} w_{1}\\h w_{2} + p_{1} w_{1} - p_{2} w_{2}\end{matrix}\right] = Uw$
+
+            
+            $\displaystyle U = \left[\begin{matrix}h - p_{2} & - p_{1}\\p_{1} & h - p_{2}\end{matrix}\right]$
+
+            
+            \begin{Verbatim}[commandchars=\\\{\}]
+
+
+        check that matrix U is correctly defined
+            \end{Verbatim}
+
+            $\displaystyle - Uw + u = \left[\begin{matrix}0\\0\end{matrix}\right]$
+
+            
+            \begin{Verbatim}[commandchars=\\\{\}]
+
+
+        protraction with respect to p
+            \end{Verbatim}
+
+            $\displaystyle \Phi = \operatorname{atan}{\left(\frac{h w_{2} + p_{1} w_{1} - p_{2} w_{2}}{h w_{1} - p_{1} w_{2} - p_{2} w_{1}} \right)}$
+
+            
+            \begin{Verbatim}[commandchars=\\\{\}]
+
+
+        spread with respect to p
+            \end{Verbatim}
+
+            $\displaystyle \frac{\mathrm{d}\Phi}{\mathrm{d}h} = - \frac{p_{1}}{h^{2} - 2 h p_{2} + p_{1}^{2} + p_{2}^{2}}$
+
+            
+            \begin{Verbatim}[commandchars=\\\{\}]
+
+
+        equation 31 is the antiderivative of dphi/dth. (hard-coded here, obtained on
+        paper)
+            \end{Verbatim}
+
+            $\displaystyle (31) = \theta - \operatorname{atan}{\left(\frac{s - \cos{\left(\theta \right)}}{\sin{\left(\theta \right)}} \right)}$
+
+            
+            \begin{Verbatim}[commandchars=\\\{\}]
+
+
+        is the expression in (31) a correct antiderivative of dphi/dth?
+            \end{Verbatim}
+
+            
+            \begin{Verbatim}[commandchars=\\\{\}]
+        True
+            \end{Verbatim}
+
+            
+            \begin{Verbatim}[commandchars=\\\{\}]
+
+
+            \end{Verbatim}
+
+    \subsection{(Proof 4.1.1) Proof that all whisker lines will be tangent to the parabola}\label{proof-that-all-whisker-lines-will-be-tangent-to-the-parabola}
+
+        The envelope conditions are\ldots{}
+
+        \(\left\{\begin{matrix}
+        G(x,y,t) = 0
+        \\ 
+        \frac{\partial F}{\partial t} = 0
+        \end{matrix}\right.\)
+
+        Where G is a family of curves, here specifically its the whisker lines.
+        h is the single parameter that defines the family of lines.
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+        \prompt{In}{incolor}{16}{\boxspacing}
+        \begin{Verbatim}[commandchars=\\\{\}]
+        \PY{c+c1}{\PYZsh{}define G(x,y,h)}
+        \PY{n}{G} \PY{o}{=} \PY{p}{(}\PY{n}{u\PYZus{}w}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{/}\PY{n}{u\PYZus{}w}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}\PY{o}{*}\PY{n}{x} \PY{o}{\PYZhy{}} \PY{n}{y} \PY{o}{+} \PY{n}{h}
+
+        \PY{c+c1}{\PYZsh{}now multiply it by u2 since you can do that in the equation equal to zero...}
+        \PY{n}{G\PYZus{}mult} \PY{o}{=} \PY{n}{sym}\PY{o}{.}\PY{n}{collect}\PY{p}{(}\PY{n}{sym}\PY{o}{.}\PY{n}{expand}\PY{p}{(}\PY{n}{sym}\PY{o}{.}\PY{n}{simplify}\PY{p}{(}\PY{n}{G}\PY{o}{*}\PY{n}{u\PYZus{}w}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}\PY{p}{)}\PY{p}{,}\PY{n}{h}\PY{p}{)}
+
+        \PY{c+c1}{\PYZsh{}take the derivative of G\PYZus{}mult with respect to h to form the second envelope condition}
+        \PY{n}{condition2} \PY{o}{=} \PY{n}{G\PYZus{}mult}\PY{o}{.}\PY{n}{diff}\PY{p}{(}\PY{n}{h}\PY{p}{)}
+
+        \PY{c+c1}{\PYZsh{}solve for h}
+        \PY{n}{h\PYZus{}solve} \PY{o}{=} \PY{n}{solve}\PY{p}{(}\PY{n}{condition2}\PY{p}{,}\PY{n}{h}\PY{p}{)}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}
+
+        \PY{c+c1}{\PYZsh{}solve system of eqns by substituting h into G=0}
+        \PY{n}{conditions\PYZus{}solve} \PY{o}{=} \PY{n}{sym}\PY{o}{.}\PY{n}{simplify}\PY{p}{(}\PY{n}{G\PYZus{}mult}\PY{o}{.}\PY{n}{subs}\PY{p}{(}\PY{p}{\PYZob{}}\PY{n}{h}\PY{p}{:}\PY{n}{h\PYZus{}solve}\PY{p}{\PYZcb{}}\PY{p}{)}\PY{p}{)}
+
+        \PY{c+c1}{\PYZsh{}again, since its equal to zero, we can multiply (\PYZdq{}both sides\PYZdq{}) by (\PYZhy{}4w1)}
+        \PY{n}{conditions\PYZus{}solve\PYZus{}mult} \PY{o}{=} \PY{n}{conditions\PYZus{}solve}\PY{o}{*}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{l+m+mi}{4}\PY{o}{*}\PY{n}{w1}\PY{p}{)}
+
+        \PY{c+c1}{\PYZsh{} is it equal to the conic?}
+        \PY{n}{is\PYZus{}equal\PYZus{}to\PYZus{}conic} \PY{o}{=} \PY{n}{conditions\PYZus{}solve\PYZus{}mult}\PY{o}{.}\PY{n}{equals}\PY{p}{(}\PY{n}{conic\PYZus{}w}\PY{p}{)}
+        \end{Verbatim}
+        \end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+        \prompt{In}{incolor}{17}{\boxspacing}
+        \begin{Verbatim}[commandchars=\\\{\}]
+        \PY{c+c1}{\PYZsh{}4.1 displays}
+        \PY{n}{Eqdisp}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{G}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{p}{(}\PY{n}{u2}\PY{o}{/}\PY{n}{u1}\PY{p}{)}\PY{o}{*}\PY{n}{x}\PY{o}{\PYZhy{}}\PY{n}{y}\PY{o}{+}\PY{n}{h}\PY{p}{,}\PY{n}{G}\PY{p}{,}\PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{The family of curves G(x,y,h)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{n}{Eqdisp}\PY{p}{(}\PY{l+s+sa}{r}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{frac}\PY{l+s+s1}{\PYZob{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{mathrm}\PY{l+s+si}{\PYZob{}d\PYZcb{}}\PY{l+s+s1}{G\PYZcb{}}\PY{l+s+s1}{\PYZob{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{mathrm}\PY{l+s+si}{\PYZob{}d\PYZcb{}}\PY{l+s+s1}{h\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{n}{condition2}\PY{p}{,}\PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Derivative of G with respect to h (second envelope condition)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{n}{Eqdisp}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{h\PYZus{}G}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{h\PYZus{}solve}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{first condition (G=0) solved for h}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{n}{Eqdisp}\PY{p}{(}\PY{n}{conditions\PYZus{}solve\PYZus{}mult}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{n}{label} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{solution to system of equations}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{n}{Eqdisp}\PY{p}{(}\PY{n}{is\PYZus{}equal\PYZus{}to\PYZus{}conic}\PY{p}{,}\PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{is it equal to the conic?}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \end{Verbatim}
+        \end{tcolorbox}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+        The family of curves G(x,y,h)
+            \end{Verbatim}
+
+            $\displaystyle G = h - y + \frac{u_{2} x}{u_{1}} = h + \frac{x \left(h w_{2} - r_{2}\right)}{h w_{1} - r_{1}} - y$
+
+            
+            \begin{Verbatim}[commandchars=\\\{\}]
+
+
+        Derivative of G with respect to h (second envelope condition)
+            \end{Verbatim}
+
+            $\displaystyle \frac{\mathrm{d}G}{\mathrm{d}h} = 0 = 2 h w_{1} - r_{1} - w_{1} y + w_{2} x$
+
+            
+            \begin{Verbatim}[commandchars=\\\{\}]
+
+
+        first condition (G=0) solved for h
+            \end{Verbatim}
+
+            $\displaystyle h_{G} = \frac{r_{1} + w_{1} y - w_{2} x}{2 w_{1}}$
+
+            
+            \begin{Verbatim}[commandchars=\\\{\}]
+
+
+        solution to system of equations
+            \end{Verbatim}
+
+            $\displaystyle - 4 w_{1} \left(r_{1} y - r_{2} x - \frac{\left(r_{1} + w_{1} y - w_{2} x\right)^{2}}{4 w_{1}}\right) = 0$
+
+            
+            \begin{Verbatim}[commandchars=\\\{\}]
+
+
+        is it equal to the conic?
+            \end{Verbatim}
+
+            
+            \begin{Verbatim}[commandchars=\\\{\}]
+        True
+            \end{Verbatim}
+
+            
+            \begin{Verbatim}[commandchars=\\\{\}]
+
+
+            \end{Verbatim}
+
+    \subsection{(Proof 4.1.2) Proof that the principal axes of the parabola are spanned by w and $\perp$w}\label{proof-that-the-principal-axes-of-the-parabola-are-spanned-by-w-and-w}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+        \prompt{In}{incolor}{18}{\boxspacing}
+        \begin{Verbatim}[commandchars=\\\{\}]
+        \PY{c+c1}{\PYZsh{} take the eigenvalues of the A33 () matrix...}
+        \PY{n}{v1} \PY{o}{=} \PY{n}{A33}\PY{o}{.}\PY{n}{eigenvects}\PY{p}{(}\PY{p}{)}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}
+        \PY{n}{v2} \PY{o}{=} \PY{n}{A33}\PY{o}{.}\PY{n}{eigenvects}\PY{p}{(}\PY{p}{)}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}
+
+        \PY{c+c1}{\PYZsh{}multiply by chosen constants }
+        \PY{n}{basis\PYZus{}1} \PY{o}{=} \PY{n}{v1}\PY{o}{*}\PY{n}{w2}
+        \PY{n}{basis\PYZus{}2} \PY{o}{=} \PY{n}{v2}\PY{o}{*}\PY{n}{w1}
+        \end{Verbatim}
+        \end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+        \prompt{In}{incolor}{19}{\boxspacing}
+        \begin{Verbatim}[commandchars=\\\{\}]
+        \PY{c+c1}{\PYZsh{}4.2 displays}
+        \PY{n}{Eqdisp}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{v\PYZus{}1}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{v1}\PY{p}{,}\PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{eigenvalues of A33}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{n}{Eqdisp}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{v\PYZus{}2}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{v2}\PY{p}{)}
+        \PY{n}{Eqdisp}\PY{p}{(}\PY{l+s+sa}{r}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{mathrm}\PY{l+s+si}{\PYZob{}basis\PYZus{}1\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{basis\PYZus{}1}\PY{p}{,}\PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{chosen basis vectors}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{n}{Eqdisp}\PY{p}{(}\PY{l+s+sa}{r}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{mathrm}\PY{l+s+si}{\PYZob{}basis\PYZus{}2\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{basis\PYZus{}2}\PY{p}{)}
+        \end{Verbatim}
+        \end{tcolorbox}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+        eigenvalues of A33
+            \end{Verbatim}
+
+            $\displaystyle v_{1} = \left[\begin{matrix}\frac{w_{1}}{w_{2}}\\1\end{matrix}\right]$
+
+            
+            \begin{Verbatim}[commandchars=\\\{\}]
+
+
+            \end{Verbatim}
+
+            $\displaystyle v_{2} = \left[\begin{matrix}- \frac{w_{2}}{w_{1}}\\1\end{matrix}\right]$
+
+            
+            \begin{Verbatim}[commandchars=\\\{\}]
+
+
+        chosen basis vectors
+            \end{Verbatim}
+
+            $\displaystyle \mathrm{basis_1} = \left[\begin{matrix}w_{1}\\w_{2}\end{matrix}\right]$
+
+            
+            \begin{Verbatim}[commandchars=\\\{\}]
+
+
+            \end{Verbatim}
+
+            $\displaystyle \mathrm{basis_2} = \left[\begin{matrix}- w_{2}\\w_{1}\end{matrix}\right]$
+
+            
+            \begin{Verbatim}[commandchars=\\\{\}]
+
+
+            \end{Verbatim}
+
+    \subsection{(Proof 4.1.3) Proof that the focus of the parabola is located at the coordinates (p1,p2) in the x-y plane.}\label{proof-that-the-focus-of-the-parabola-is-located-at-the-coordinates-p1p2-in-the-x-y-plane.}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+        \prompt{In}{incolor}{20}{\boxspacing}
+        \begin{Verbatim}[commandchars=\\\{\}]
+        \PY{c+c1}{\PYZsh{}invert A}
+        \PY{n}{A\PYZus{}w\PYZus{}inv} \PY{o}{=} \PY{n}{A\PYZus{}w}\PY{o}{.}\PY{n}{inv}\PY{p}{(}\PY{p}{)}
+
+        \PY{c+c1}{\PYZsh{}get values...}
+        \PY{n}{K} \PY{o}{=} \PY{n}{A\PYZus{}w\PYZus{}inv}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{/}\PY{l+m+mi}{2}
+        \PY{n}{H} \PY{o}{=} \PY{n}{A\PYZus{}w\PYZus{}inv}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]}
+        \PY{n}{S} \PY{o}{=} \PY{n}{A\PYZus{}w\PYZus{}inv}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{]}
+        \PY{n}{R} \PY{o}{=} \PY{n}{A\PYZus{}w\PYZus{}inv}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{]}
+
+        \PY{c+c1}{\PYZsh{}calculate focus...}
+        \PY{n}{focus} \PY{o}{=} \PY{n}{sym}\PY{o}{.}\PY{n}{simplify}\PY{p}{(}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{n}{K} \PY{o}{+} \PY{n}{H}\PY{o}{*}\PY{n}{sym}\PY{o}{.}\PY{n}{I}\PY{p}{)}\PY{o}{/}\PY{p}{(}\PY{n}{R} \PY{o}{+} \PY{n}{S}\PY{o}{*}\PY{n}{sym}\PY{o}{.}\PY{n}{I}\PY{p}{)}\PY{p}{)}
+
+        \PY{c+c1}{\PYZsh{}get real and imaginary parts}
+        \PY{n}{xF} \PY{o}{=} \PY{n}{sym}\PY{o}{.}\PY{n}{re}\PY{p}{(}\PY{n}{focus}\PY{p}{)}
+        \PY{n}{yF} \PY{o}{=} \PY{n}{sym}\PY{o}{.}\PY{n}{im}\PY{p}{(}\PY{n}{focus}\PY{p}{)}
+        \end{Verbatim}
+        \end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+        \prompt{In}{incolor}{21}{\boxspacing}
+        \begin{Verbatim}[commandchars=\\\{\}]
+        \PY{c+c1}{\PYZsh{}4.3 displays}
+        \PY{n}{Eqdisp}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{A\PYZca{}\PYZhy{}1}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{A\PYZus{}w\PYZus{}inv}\PY{p}{,}\PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Inverse of A}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{n}{Eqdisp}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{F}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{focus}\PY{p}{,}\PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{focus of the parabola}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{n}{Eqdisp}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{x\PYZus{}F}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{p\PYZus{}1}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{xF}\PY{p}{,}\PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{The real and imaginary parts of this focus are equal to the coordinates of the point (p1,p2)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{n}{Eqdisp}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{x\PYZus{}F}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{p\PYZus{}2}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{yF}\PY{p}{)}
+        \end{Verbatim}
+        \end{tcolorbox}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+        Inverse of A
+            \end{Verbatim}
+
+            $\displaystyle A^{-1} = \left[\begin{matrix}0 & - \frac{r_{1}}{2 r_{1} w_{1} w_{2} - 2 r_{2} w_{1}^{2}} & - \frac{1}{2 r_{1} w_{2} - 2 r_{2} w_{1}}\\- \frac{r_{1}}{2 r_{1} w_{1} w_{2} - 2 r_{2} w_{1}^{2}} & - \frac{r_{2}}{r_{1} w_{1} w_{2} - r_{2} w_{1}^{2}} & - \frac{w_{2}}{2 r_{1} w_{1} w_{2} - 2 r_{2} w_{1}^{2}}\\- \frac{1}{2 r_{1} w_{2} - 2 r_{2} w_{1}} & - \frac{w_{2}}{2 r_{1} w_{1} w_{2} - 2 r_{2} w_{1}^{2}} & 0\end{matrix}\right]$
+
+            
+            \begin{Verbatim}[commandchars=\\\{\}]
+
+
+        focus of the parabola
+            \end{Verbatim}
+
+            $\displaystyle F = \frac{i r_{1} - r_{2}}{w_{1} + i w_{2}}$
+
+            
+            \begin{Verbatim}[commandchars=\\\{\}]
+
+
+        The real and imaginary parts of this focus are equal to the coordinates of the
+        point (p1,p2)
+            \end{Verbatim}
+
+            $\displaystyle x_{F} = p_{1} = \frac{r_{1} w_{2}}{w_{1}^{2} + w_{2}^{2}} - \frac{r_{2} w_{1}}{w_{1}^{2} + w_{2}^{2}}$
+
+            
+            \begin{Verbatim}[commandchars=\\\{\}]
+
+
+            \end{Verbatim}
+
+            $\displaystyle x_{F} = p_{2} = \frac{r_{1} w_{1}}{w_{1}^{2} + w_{2}^{2}} + \frac{r_{2} w_{2}}{w_{1}^{2} + w_{2}^{2}}$
+
+            
+            \begin{Verbatim}[commandchars=\\\{\}]
+
+
+            \end{Verbatim}
+
+    \subsection{(Proof 4.1.4) Proof that as θ changes with p\_1and p\_2 held constant, the control frame rotates about (p\_1, p\_2), the focus of the parabola}\label{proof-that-as-ux3b8-changes-with-p_1and-p_2-held-constant-the-control-frame-rotates-about-p_1-p_2-the-focus-of-the-parabola}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+        \prompt{In}{incolor}{22}{\boxspacing}
+        \begin{Verbatim}[commandchars=\\\{\}]
+        \PY{c+c1}{\PYZsh{}substitute s and theta terms into the p\PYZhy{}space expression for r}
+        \PY{n}{r\PYZus{}p\PYZus{}subs} \PY{o}{=} \PY{n}{r\PYZus{}p}\PY{o}{.}\PY{n}{subs}\PY{p}{(}\PY{p}{\PYZob{}}\PY{n}{w1}\PY{p}{:}\PY{n}{w\PYZus{}x}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,}\PY{n}{w2}\PY{p}{:}\PY{n}{w\PYZus{}x}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{\PYZcb{}}\PY{p}{)}
+
+        \PY{c+c1}{\PYZsh{}verify that the O matrix, derived from the P matrix (see paper), is orthogonal}
+        \PY{n}{P} \PY{o}{=} \PY{n}{Matrix}\PY{p}{(}\PY{p}{[}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{n}{p1}\PY{p}{,}\PY{n}{p2}\PY{p}{]}\PY{p}{,}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{n}{p2}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{n}{p1}\PY{p}{]}\PY{p}{]}\PY{p}{)}
+        \PY{n}{O} \PY{o}{=} \PY{n}{sym}\PY{o}{.}\PY{n}{simplify}\PY{p}{(}\PY{n}{P}\PY{o}{/}\PY{p}{(}\PY{n}{sym}\PY{o}{.}\PY{n}{sqrt}\PY{p}{(}\PY{n}{p1}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2} \PY{o}{+} \PY{n}{p2}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+        \PY{n}{is\PYZus{}equal\PYZus{}to\PYZus{}I} \PY{o}{=} \PY{p}{(}\PY{n}{O}\PY{o}{.}\PY{n}{T}\PY{o}{*}\PY{n}{O}\PY{p}{)}\PY{o}{.}\PY{n}{equals}\PY{p}{(}\PY{n}{sym}\PY{o}{.}\PY{n}{eye}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{)}
+        \end{Verbatim}
+        \end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+        \prompt{In}{incolor}{23}{\boxspacing}
+        \begin{Verbatim}[commandchars=\\\{\}]
+        \PY{n}{Eqdisp}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{r}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{r\PYZus{}p\PYZus{}subs}\PY{p}{,}\PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{r, in p space, expressed in s and theta terms}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{n}{Eqdisp}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{O}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{O}\PY{p}{,}\PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{O matrix}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{n}{Eqdisp}\PY{p}{(}\PY{n}{is\PYZus{}equal\PYZus{}to\PYZus{}I}\PY{p}{,}\PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{is O orthogonal?}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \end{Verbatim}
+        \end{tcolorbox}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+        r, in p space, expressed in s and theta terms
+            \end{Verbatim}
+
+            $\displaystyle r = \left[\begin{matrix}p_{1} \left(- s \cos{\left(\theta \right)} + 1\right) + p_{2} s \sin{\left(\theta \right)}\\- p_{1} s \sin{\left(\theta \right)} + p_{2} \left(- s \cos{\left(\theta \right)} + 1\right)\end{matrix}\right]$
+
+            
+            \begin{Verbatim}[commandchars=\\\{\}]
+
+
+        O matrix
+            \end{Verbatim}
+
+            $\displaystyle O = \left[\begin{matrix}- \frac{p_{1}}{\sqrt{p_{1}^{2} + p_{2}^{2}}} & \frac{p_{2}}{\sqrt{p_{1}^{2} + p_{2}^{2}}}\\- \frac{p_{2}}{\sqrt{p_{1}^{2} + p_{2}^{2}}} & - \frac{p_{1}}{\sqrt{p_{1}^{2} + p_{2}^{2}}}\end{matrix}\right]$
+
+            
+            \begin{Verbatim}[commandchars=\\\{\}]
+
+
+        is O orthogonal?
+            \end{Verbatim}
+
+            
+            \begin{Verbatim}[commandchars=\\\{\}]
+        True
+            \end{Verbatim}
+
+            
+            \begin{Verbatim}[commandchars=\\\{\}]
+
+
+            \end{Verbatim}
+
+    \subsection{(For Section 4.3) Hardware Calculations (velocity conversions not in manuscript)}\label{hardware-calculations-for-paper-revisions}
+
+            \subsubsection{``forwards'' conversions to m and velocity
+        conversions}\label{forwards-conversions-to-m-and-velocity-conversions}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+        \prompt{In}{incolor}{24}{\boxspacing}
+        \begin{Verbatim}[commandchars=\\\{\}]
+        \PY{c+c1}{\PYZsh{}some symbols}
+        \PY{n}{delta1}\PY{p}{,}\PY{n}{delta2}\PY{p}{,}\PY{n}{m1}\PY{p}{,}\PY{n}{m2} \PY{o}{=} \PY{n}{symbols}\PY{p}{(}\PY{l+s+sa}{r}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{Delta\PYZus{}1,}\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{Delta\PYZus{}2,m\PYZus{}1,m\PYZus{}2}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+        \PY{n}{m} \PY{o}{=} \PY{n}{Matrix}\PY{p}{(}\PY{p}{[}\PY{n}{m1}\PY{p}{,}\PY{n}{m2}\PY{p}{]}\PY{p}{)}
+        \PY{n}{delta} \PY{o}{=} \PY{n}{Matrix}\PY{p}{(}\PY{p}{[}\PY{n}{delta1}\PY{p}{,}\PY{n}{delta2}\PY{p}{]}\PY{p}{)}
+        \PY{n}{Rot} \PY{o}{=} \PY{n}{Matrix}\PY{p}{(}\PY{p}{[}\PY{p}{[}\PY{n}{cos}\PY{p}{(}\PY{n}{th}\PY{p}{)}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{n}{sin}\PY{p}{(}\PY{n}{th}\PY{p}{)}\PY{p}{]}\PY{p}{,}\PY{p}{[}\PY{n}{sin}\PY{p}{(}\PY{n}{th}\PY{p}{)}\PY{p}{,} \PY{n}{cos}\PY{p}{(}\PY{n}{th}\PY{p}{)}\PY{p}{]}\PY{p}{]}\PY{p}{)}
+        \PY{n}{f\PYZus{}s} \PY{o}{=} \PY{n}{symbols}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{f\PYZus{}s}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)} \PY{c+c1}{\PYZsh{}scale factor. }
+        \PY{n}{f\PYZus{}s\PYZus{}val} \PY{o}{=} \PY{l+m+mf}{63.5} \PY{c+c1}{\PYZsh{}mm}
+        \end{Verbatim}
+        \end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+        \prompt{In}{incolor}{25}{\boxspacing}
+        \begin{Verbatim}[commandchars=\\\{\}]
+        \PY{c+c1}{\PYZsh{}define m in terms of r}
+        \PY{n}{m\PYZus{}r} \PY{o}{=} \PY{n}{f\PYZus{}s}\PY{o}{*}\PY{n}{r} \PY{o}{+} \PY{n}{Rot}\PY{o}{*}\PY{n}{delta}
+
+        \PY{c+c1}{\PYZsh{}display}
+        \PY{n}{Eqdisp}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{m\PYZus{}r}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{m\PYZus{}r}\PY{p}{)}
+        \PY{n}{Eqdisp}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{f\PYZus{}s}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{f\PYZus{}s\PYZus{}val}\PY{p}{)}
+        \end{Verbatim}
+        \end{tcolorbox}
+
+            $\displaystyle m_{r} = \left[\begin{matrix}\Delta_{1} \cos{\left(\theta \right)} - \Delta_{2} \sin{\left(\theta \right)} + f_{s} r_{1}\\\Delta_{1} \sin{\left(\theta \right)} + \Delta_{2} \cos{\left(\theta \right)} + f_{s} r_{2}\end{matrix}\right]$
+
+            
+            \begin{Verbatim}[commandchars=\\\{\}]
+
+
+            \end{Verbatim}
+
+            $\displaystyle f_{s} = 63.5$
+
+            
+            \begin{Verbatim}[commandchars=\\\{\}]
+
+
+            \end{Verbatim}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+        \prompt{In}{incolor}{26}{\boxspacing}
+        \begin{Verbatim}[commandchars=\\\{\}]
+        \PY{c+c1}{\PYZsh{}define 3\PYZhy{}vectors to act as full configurations.  }
+        \PY{n}{mx} \PY{o}{=} \PY{n}{sym}\PY{o}{.}\PY{n}{Matrix}\PY{p}{(}\PY{p}{[}\PY{n}{m1}\PY{p}{,}\PY{n}{m2}\PY{p}{,}\PY{n}{th}\PY{p}{]}\PY{p}{)}
+        \PY{n}{rx} \PY{o}{=} \PY{n}{sym}\PY{o}{.}\PY{n}{Matrix}\PY{p}{(}\PY{p}{[}\PY{n}{r1}\PY{p}{,}\PY{n}{r2}\PY{p}{,}\PY{n}{th}\PY{p}{]}\PY{p}{)}
+        \PY{n}{px} \PY{o}{=} \PY{n}{sym}\PY{o}{.}\PY{n}{Matrix}\PY{p}{(}\PY{p}{[}\PY{n}{p1}\PY{p}{,}\PY{n}{p2}\PY{p}{,}\PY{n}{th}\PY{p}{]}\PY{p}{)}
+
+        \PY{c+c1}{\PYZsh{}make substitutions to make it differentiable}
+        \PY{n}{mxsub} \PY{o}{=} \PY{n}{mx}\PY{o}{.}\PY{n}{subs}\PY{p}{(}\PY{p}{\PYZob{}}\PY{n}{m1}\PY{p}{:}\PY{n}{m\PYZus{}r}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,}\PY{n}{m2}\PY{p}{:}\PY{n}{m\PYZus{}r}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{\PYZcb{}}\PY{p}{)}
+        \PY{n}{rxsub} \PY{o}{=} \PY{n}{rx}\PY{o}{.}\PY{n}{subs}\PY{p}{(}\PY{p}{\PYZob{}}\PY{n}{r1}\PY{p}{:}\PY{n}{r\PYZus{}p}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,}\PY{n}{r2}\PY{p}{:}\PY{n}{r\PYZus{}p}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{\PYZcb{}}\PY{p}{)}\PY{o}{.}\PY{n}{subs}\PY{p}{(}\PY{p}{\PYZob{}}\PY{n}{w1}\PY{p}{:}\PY{n}{w\PYZus{}x}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,}\PY{n}{w2}\PY{p}{:}\PY{n}{w\PYZus{}x}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{\PYZcb{}}\PY{p}{)}
+
+        \PY{c+c1}{\PYZsh{}calculate jacobians for velocity kinematics}
+        \PY{n}{dm\PYZus{}dr} \PY{o}{=} \PY{n}{mxsub}\PY{o}{.}\PY{n}{jacobian}\PY{p}{(}\PY{n}{rx}\PY{p}{)}
+        \PY{n}{dr\PYZus{}dp} \PY{o}{=} \PY{n}{rxsub}\PY{o}{.}\PY{n}{jacobian}\PY{p}{(}\PY{n}{px}\PY{p}{)}
+
+        \PY{c+c1}{\PYZsh{}getting dm\PYZus{}dp}
+        \PY{n}{dm\PYZus{}dp} \PY{o}{=} \PY{n}{dm\PYZus{}dr}\PY{o}{*}\PY{n}{dr\PYZus{}dp}
+
+        \PY{c+c1}{\PYZsh{}display}
+        \PY{n}{Eqdisp}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{m\PYZus{}}\PY{l+s+si}{\PYZob{}rx\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{mxsub}\PY{p}{,}\PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{m and r as a funcion of r and p, respectively. Theta as the third coordinate}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{n}{Eqdisp}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{r\PYZus{}}\PY{l+s+si}{\PYZob{}px\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{rxsub}\PY{p}{)}
+        \PY{n}{Eqdisp}\PY{p}{(}\PY{l+s+sa}{r}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{frac}\PY{l+s+s1}{\PYZob{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{mathrm}\PY{l+s+si}{\PYZob{}d\PYZcb{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{mathbf}\PY{l+s+si}{\PYZob{}m\PYZcb{}}\PY{l+s+s1}{\PYZcb{}}\PY{l+s+s1}{\PYZob{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{mathrm}\PY{l+s+si}{\PYZob{}d\PYZcb{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{mathbf}\PY{l+s+si}{\PYZob{}t\PYZcb{}}\PY{l+s+s1}{\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+sa}{r}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{frac}\PY{l+s+s1}{\PYZob{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{mathrm}\PY{l+s+si}{\PYZob{}d\PYZcb{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{mathbf}\PY{l+s+si}{\PYZob{}m\PYZcb{}}\PY{l+s+s1}{\PYZcb{}}\PY{l+s+s1}{\PYZob{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{mathrm}\PY{l+s+si}{\PYZob{}d\PYZcb{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{mathbf}\PY{l+s+si}{\PYZob{}r\PYZcb{}}\PY{l+s+s1}{\PYZcb{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{frac}\PY{l+s+s1}{\PYZob{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{mathrm}\PY{l+s+si}{\PYZob{}d\PYZcb{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{mathbf}\PY{l+s+si}{\PYZob{}r\PYZcb{}}\PY{l+s+s1}{\PYZcb{}}\PY{l+s+s1}{\PYZob{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{mathrm}\PY{l+s+si}{\PYZob{}d\PYZcb{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{mathbf}\PY{l+s+si}{\PYZob{}t\PYZcb{}}\PY{l+s+s1}{\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+            \PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{conversion from dr\PYZus{}dt to dm\PYZus{}dt}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{n}{Eqdisp}\PY{p}{(}\PY{l+s+sa}{r}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{frac}\PY{l+s+s1}{\PYZob{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{mathrm}\PY{l+s+si}{\PYZob{}d\PYZcb{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{mathbf}\PY{l+s+si}{\PYZob{}m\PYZcb{}}\PY{l+s+s1}{\PYZcb{}}\PY{l+s+s1}{\PYZob{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{mathrm}\PY{l+s+si}{\PYZob{}d\PYZcb{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{mathbf}\PY{l+s+si}{\PYZob{}r\PYZcb{}}\PY{l+s+s1}{\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{dm\PYZus{}dr}\PY{p}{)}
+        \PY{n}{Eqdisp}\PY{p}{(}\PY{l+s+sa}{r}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{frac}\PY{l+s+s1}{\PYZob{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{mathrm}\PY{l+s+si}{\PYZob{}d\PYZcb{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{mathbf}\PY{l+s+si}{\PYZob{}r\PYZcb{}}\PY{l+s+s1}{\PYZcb{}}\PY{l+s+s1}{\PYZob{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{mathrm}\PY{l+s+si}{\PYZob{}d\PYZcb{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{mathbf}\PY{l+s+si}{\PYZob{}t\PYZcb{}}\PY{l+s+s1}{\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+sa}{r}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{frac}\PY{l+s+s1}{\PYZob{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{mathrm}\PY{l+s+si}{\PYZob{}d\PYZcb{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{mathbf}\PY{l+s+si}{\PYZob{}r\PYZcb{}}\PY{l+s+s1}{\PYZcb{}}\PY{l+s+s1}{\PYZob{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{mathrm}\PY{l+s+si}{\PYZob{}d\PYZcb{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{mathbf}\PY{l+s+si}{\PYZob{}p\PYZcb{}}\PY{l+s+s1}{\PYZcb{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{frac}\PY{l+s+s1}{\PYZob{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{mathrm}\PY{l+s+si}{\PYZob{}d\PYZcb{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{mathbf}\PY{l+s+si}{\PYZob{}p\PYZcb{}}\PY{l+s+s1}{\PYZcb{}}\PY{l+s+s1}{\PYZob{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{mathrm}\PY{l+s+si}{\PYZob{}d\PYZcb{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{mathbf}\PY{l+s+si}{\PYZob{}t\PYZcb{}}\PY{l+s+s1}{\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+            \PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{conversion from dp\PYZus{}dt to dr\PYZus{}dt}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{n}{Eqdisp}\PY{p}{(}\PY{l+s+sa}{r}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{frac}\PY{l+s+s1}{\PYZob{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{mathrm}\PY{l+s+si}{\PYZob{}d\PYZcb{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{mathbf}\PY{l+s+si}{\PYZob{}r\PYZcb{}}\PY{l+s+s1}{\PYZcb{}}\PY{l+s+s1}{\PYZob{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{mathrm}\PY{l+s+si}{\PYZob{}d\PYZcb{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{mathbf}\PY{l+s+si}{\PYZob{}p\PYZcb{}}\PY{l+s+s1}{\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{dr\PYZus{}dp}\PY{p}{)}
+        \PY{n}{Eqdisp}\PY{p}{(}\PY{l+s+sa}{r}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{frac}\PY{l+s+s1}{\PYZob{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{mathrm}\PY{l+s+si}{\PYZob{}d\PYZcb{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{mathbf}\PY{l+s+si}{\PYZob{}m\PYZcb{}}\PY{l+s+s1}{\PYZcb{}}\PY{l+s+s1}{\PYZob{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{mathrm}\PY{l+s+si}{\PYZob{}d\PYZcb{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{mathbf}\PY{l+s+si}{\PYZob{}t\PYZcb{}}\PY{l+s+s1}{\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+            \PY{l+s+sa}{r}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{frac}\PY{l+s+s1}{\PYZob{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{mathrm}\PY{l+s+si}{\PYZob{}d\PYZcb{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{mathbf}\PY{l+s+si}{\PYZob{}m\PYZcb{}}\PY{l+s+s1}{\PYZcb{}}\PY{l+s+s1}{\PYZob{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{mathrm}\PY{l+s+si}{\PYZob{}d\PYZcb{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{mathbf}\PY{l+s+si}{\PYZob{}r\PYZcb{}}\PY{l+s+s1}{\PYZcb{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{frac}\PY{l+s+s1}{\PYZob{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{mathrm}\PY{l+s+si}{\PYZob{}d\PYZcb{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{mathbf}\PY{l+s+si}{\PYZob{}r\PYZcb{}}\PY{l+s+s1}{\PYZcb{}}\PY{l+s+s1}{\PYZob{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{mathrm}\PY{l+s+si}{\PYZob{}d\PYZcb{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{mathbf}\PY{l+s+si}{\PYZob{}p\PYZcb{}}\PY{l+s+s1}{\PYZcb{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{frac}\PY{l+s+s1}{\PYZob{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{mathrm}\PY{l+s+si}{\PYZob{}d\PYZcb{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{mathbf}\PY{l+s+si}{\PYZob{}p\PYZcb{}}\PY{l+s+s1}{\PYZcb{}}\PY{l+s+s1}{\PYZob{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{mathrm}\PY{l+s+si}{\PYZob{}d\PYZcb{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{mathbf}\PY{l+s+si}{\PYZob{}t\PYZcb{}}\PY{l+s+s1}{\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+            \PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{conversion from dp\PYZus{}dt to dm\PYZus{}dt}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{n}{Eqdisp}\PY{p}{(}\PY{l+s+sa}{r}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{frac}\PY{l+s+s1}{\PYZob{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{mathrm}\PY{l+s+si}{\PYZob{}d\PYZcb{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{mathbf}\PY{l+s+si}{\PYZob{}m\PYZcb{}}\PY{l+s+s1}{\PYZcb{}}\PY{l+s+s1}{\PYZob{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{mathrm}\PY{l+s+si}{\PYZob{}d\PYZcb{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{mathbf}\PY{l+s+si}{\PYZob{}p\PYZcb{}}\PY{l+s+s1}{\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+            \PY{l+s+sa}{r}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{frac}\PY{l+s+s1}{\PYZob{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{mathrm}\PY{l+s+si}{\PYZob{}d\PYZcb{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{mathbf}\PY{l+s+si}{\PYZob{}m\PYZcb{}}\PY{l+s+s1}{\PYZcb{}}\PY{l+s+s1}{\PYZob{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{mathrm}\PY{l+s+si}{\PYZob{}d\PYZcb{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{mathbf}\PY{l+s+si}{\PYZob{}r\PYZcb{}}\PY{l+s+s1}{\PYZcb{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{frac}\PY{l+s+s1}{\PYZob{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{mathrm}\PY{l+s+si}{\PYZob{}d\PYZcb{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{mathbf}\PY{l+s+si}{\PYZob{}r\PYZcb{}}\PY{l+s+s1}{\PYZcb{}}\PY{l+s+s1}{\PYZob{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{mathrm}\PY{l+s+si}{\PYZob{}d\PYZcb{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{mathbf}\PY{l+s+si}{\PYZob{}p\PYZcb{}}\PY{l+s+s1}{\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+            \PY{n}{dm\PYZus{}dp}\PY{p}{)}
+        \end{Verbatim}
+        \end{tcolorbox}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+        m and r as a funcion of r and p, respectively. Theta as the third coordinate
+            \end{Verbatim}
+
+            $\displaystyle m_{rx} = \left[\begin{matrix}\Delta_{1} \cos{\left(\theta \right)} - \Delta_{2} \sin{\left(\theta \right)} + f_{s} r_{1}\\\Delta_{1} \sin{\left(\theta \right)} + \Delta_{2} \cos{\left(\theta \right)} + f_{s} r_{2}\\\theta\end{matrix}\right]$
+
+            
+            \begin{Verbatim}[commandchars=\\\{\}]
+
+
+            \end{Verbatim}
+
+            $\displaystyle r_{px} = \left[\begin{matrix}p_{1} \left(- s \cos{\left(\theta \right)} + 1\right) + p_{2} s \sin{\left(\theta \right)}\\- p_{1} s \sin{\left(\theta \right)} + p_{2} \left(- s \cos{\left(\theta \right)} + 1\right)\\\theta\end{matrix}\right]$
+
+            
+            \begin{Verbatim}[commandchars=\\\{\}]
+
+
+        conversion from dr\_dt to dm\_dt
+            \end{Verbatim}
+
+            $\displaystyle \frac{\mathrm{d}\mathbf{m}}{\mathrm{d}\mathbf{t}} = \frac{\mathrm{d}\mathbf{m}}{\mathrm{d}\mathbf{r}}\frac{\mathrm{d}\mathbf{r}}{\mathrm{d}\mathbf{t}}$
+
+            
+            \begin{Verbatim}[commandchars=\\\{\}]
+
+
+            \end{Verbatim}
+
+            $\displaystyle \frac{\mathrm{d}\mathbf{m}}{\mathrm{d}\mathbf{r}} = \left[\begin{matrix}f_{s} & 0 & - \Delta_{1} \sin{\left(\theta \right)} - \Delta_{2} \cos{\left(\theta \right)}\\0 & f_{s} & \Delta_{1} \cos{\left(\theta \right)} - \Delta_{2} \sin{\left(\theta \right)}\\0 & 0 & 1\end{matrix}\right]$
+
+            
+            \begin{Verbatim}[commandchars=\\\{\}]
+
+
+        conversion from dp\_dt to dr\_dt
+            \end{Verbatim}
+
+            $\displaystyle \frac{\mathrm{d}\mathbf{r}}{\mathrm{d}\mathbf{t}} = \frac{\mathrm{d}\mathbf{r}}{\mathrm{d}\mathbf{p}}\frac{\mathrm{d}\mathbf{p}}{\mathrm{d}\mathbf{t}}$
+
+            
+            \begin{Verbatim}[commandchars=\\\{\}]
+
+
+            \end{Verbatim}
+
+            $\displaystyle \frac{\mathrm{d}\mathbf{r}}{\mathrm{d}\mathbf{p}} = \left[\begin{matrix}- s \cos{\left(\theta \right)} + 1 & s \sin{\left(\theta \right)} & p_{1} s \sin{\left(\theta \right)} + p_{2} s \cos{\left(\theta \right)}\\- s \sin{\left(\theta \right)} & - s \cos{\left(\theta \right)} + 1 & - p_{1} s \cos{\left(\theta \right)} + p_{2} s \sin{\left(\theta \right)}\\0 & 0 & 1\end{matrix}\right]$
+
+            
+            \begin{Verbatim}[commandchars=\\\{\}]
+
+
+        conversion from dp\_dt to dm\_dt
+            \end{Verbatim}
+
+            $\displaystyle \frac{\mathrm{d}\mathbf{m}}{\mathrm{d}\mathbf{t}} = \frac{\mathrm{d}\mathbf{m}}{\mathrm{d}\mathbf{r}}\frac{\mathrm{d}\mathbf{r}}{\mathrm{d}\mathbf{p}}\frac{\mathrm{d}\mathbf{p}}{\mathrm{d}\mathbf{t}}$
+
+            
+            \begin{Verbatim}[commandchars=\\\{\}]
+
+
+            \end{Verbatim}
+
+            $\displaystyle \frac{\mathrm{d}\mathbf{m}}{\mathrm{d}\mathbf{p}} = \frac{\mathrm{d}\mathbf{m}}{\mathrm{d}\mathbf{r}}\frac{\mathrm{d}\mathbf{r}}{\mathrm{d}\mathbf{p}} = \left[\begin{matrix}f_{s} \left(- s \cos{\left(\theta \right)} + 1\right) & f_{s} s \sin{\left(\theta \right)} & - \Delta_{1} \sin{\left(\theta \right)} - \Delta_{2} \cos{\left(\theta \right)} + f_{s} \left(p_{1} s \sin{\left(\theta \right)} + p_{2} s \cos{\left(\theta \right)}\right)\\- f_{s} s \sin{\left(\theta \right)} & f_{s} \left(- s \cos{\left(\theta \right)} + 1\right) & \Delta_{1} \cos{\left(\theta \right)} - \Delta_{2} \sin{\left(\theta \right)} + f_{s} \left(- p_{1} s \cos{\left(\theta \right)} + p_{2} s \sin{\left(\theta \right)}\right)\\0 & 0 & 1\end{matrix}\right]$
+
+            
+            \begin{Verbatim}[commandchars=\\\{\}]
+
+
+            \end{Verbatim}
+
+            \subsubsection{``backwards'' conversion from m to r and
+        p}\label{backwards-conversion-from-m-to-r-and-p}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+        \prompt{In}{incolor}{27}{\boxspacing}
+        \begin{Verbatim}[commandchars=\\\{\}]
+        \PY{c+c1}{\PYZsh{}lets get r in terms of m...}
+        \PY{n}{r\PYZus{}m} \PY{o}{=} \PY{p}{(}\PY{l+m+mi}{1}\PY{o}{/}\PY{n}{f\PYZus{}s}\PY{p}{)}\PY{o}{*}\PY{p}{(}\PY{n}{m}\PY{o}{\PYZhy{}}\PY{n}{Rot}\PY{o}{*}\PY{n}{delta}\PY{p}{)}
+
+        \PY{c+c1}{\PYZsh{}lets get p in terms of m...}
+        \PY{n}{p\PYZus{}m} \PY{o}{=} \PY{n}{simplify}\PY{p}{(}\PY{n}{p\PYZus{}r}\PY{o}{.}\PY{n}{subs}\PY{p}{(}\PY{p}{\PYZob{}}\PY{n}{r1}\PY{p}{:}\PY{n}{r\PYZus{}m}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,}\PY{n}{r2}\PY{p}{:}\PY{n}{r\PYZus{}m}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{\PYZcb{}}\PY{p}{)}\PY{p}{)}
+        \PY{c+c1}{\PYZsh{} p\PYZus{}m}
+
+        \PY{c+c1}{\PYZsh{}displays}
+        \PY{n}{Eqdisp}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{r1\PYZus{}m}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{r\PYZus{}m}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,}\PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{r in terms of m}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{n}{Eqdisp}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{r2\PYZus{}m}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{r\PYZus{}m}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)}
+        \PY{n}{Eqdisp}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{p\PYZus{}r}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{p\PYZus{}r}\PY{p}{,}\PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{recall, p in terms of r}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{n}{Eqdisp}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{p1\PYZus{}m}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{p\PYZus{}m}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,}\PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{substituted in \PYZhy{}\PYZgt{} p in terms of m}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{n}{Eqdisp}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{p2\PYZus{}m}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{p\PYZus{}m}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)}
+        \end{Verbatim}
+        \end{tcolorbox}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+        r in terms of m
+            \end{Verbatim}
+
+            $\displaystyle r_{1 m} = \frac{- \Delta_{1} \cos{\left(\theta \right)} + \Delta_{2} \sin{\left(\theta \right)} + m_{1}}{f_{s}}$
+
+            
+            \begin{Verbatim}[commandchars=\\\{\}]
+
+
+            \end{Verbatim}
+
+            $\displaystyle r_{2 m} = \frac{- \Delta_{1} \sin{\left(\theta \right)} - \Delta_{2} \cos{\left(\theta \right)} + m_{2}}{f_{s}}$
+
+            
+            \begin{Verbatim}[commandchars=\\\{\}]
+
+
+        recall, p in terms of r
+            \end{Verbatim}
+
+            $\displaystyle p_{r} = \left[\begin{matrix}\frac{r_{1} w_{2}}{w_{1}^{2} + w_{2}^{2}} - \frac{r_{2} w_{1}}{w_{1}^{2} + w_{2}^{2}}\\\frac{r_{1} w_{1}}{w_{1}^{2} + w_{2}^{2}} + \frac{r_{2} w_{2}}{w_{1}^{2} + w_{2}^{2}}\end{matrix}\right]$
+
+            
+            \begin{Verbatim}[commandchars=\\\{\}]
+
+
+        substituted in -> p in terms of m
+            \end{Verbatim}
+
+            $\displaystyle p_{1 m} = \frac{w_{1} \left(\Delta_{1} \sin{\left(\theta \right)} + \Delta_{2} \cos{\left(\theta \right)} - m_{2}\right) + w_{2} \left(- \Delta_{1} \cos{\left(\theta \right)} + \Delta_{2} \sin{\left(\theta \right)} + m_{1}\right)}{f_{s} \left(w_{1}^{2} + w_{2}^{2}\right)}$
+
+            
+            \begin{Verbatim}[commandchars=\\\{\}]
+
+
+            \end{Verbatim}
+
+            $\displaystyle p_{2 m} = \frac{w_{1} \left(- \Delta_{1} \cos{\left(\theta \right)} + \Delta_{2} \sin{\left(\theta \right)} + m_{1}\right) - w_{2} \left(\Delta_{1} \sin{\left(\theta \right)} + \Delta_{2} \cos{\left(\theta \right)} - m_{2}\right)}{f_{s} \left(w_{1}^{2} + w_{2}^{2}\right)}$
+
+            
+            \begin{Verbatim}[commandchars=\\\{\}]
+
+
+            \end{Verbatim}
+
+
+            % Add a bibliography block to the postdoc
+            
+            
+            
+\end{document}
